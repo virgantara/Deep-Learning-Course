@@ -6,3 +6,6 @@
 ## Pengenalan Deep Learning
 ## Perbedaan ML vs Deep Learning
 ## Arsitektur Neural Network
+
+# Asesmen
+Untuk asesmen, lihat di [sini](assessment/week01/README.md)
