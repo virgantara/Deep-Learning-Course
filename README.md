@@ -1,6 +1,6 @@
 # Machine Learning 2 (Deep Learning)
 - Department of Informatics, Universitas Darussalam Gontor, Ponorogo, Indonesia
-- Lecturer Dr. Oddy Virgantara Putra
+- Lecturer [Dr. Oddy Virgantara Putra](https://virgantara.github.io/)
 
 # Weekly Course Meeting:
 
