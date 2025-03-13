@@ -8,4 +8,4 @@
 ## Arsitektur Neural Network
 
 # Asesmen
-Untuk asesmen, lihat di [sini](assessment/week01/README.md)
+Untuk asesmen, lihat di [sini](../../assessment/week01/README.md)
