@@ -1,2 +1,3 @@
-# Pretext Tasks dalam SSL
-## Pretext Tasks untuk Representasi Data (Jigsaw, Rotation, etc.)
+#  Pretext Tasks dalam SSL untuk Representasi Data 
+##  Jenis Pretext Tasks (Jigsaw, Rotation Prediction) 
+##  Implementasi dan Evaluasi Model SSL 

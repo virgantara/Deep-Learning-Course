@@ -1,2 +1,6 @@
-# Gradient Descent dan Variannya
-# Regularisasi (Dropout, BatchNorm, L1/L2)
+# Optimasi Model dan Regularisasi
+
+## Overfitting dan Underfitting
+## Teknik Regularisasi: Dropout, L1/L2 Regularization
+## Optimizers: SGD, Adam, RMSProp
+## Strategi Hyperparameter Tuning

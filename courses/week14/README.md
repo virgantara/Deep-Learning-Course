@@ -1,7 +1,3 @@
-# Deep Learning untuk NLP dan Aplikasi Nyata
-## Word Embedding 
-### Word2Vec
-### BERT
-## Studi Kasus
-### Sentiment Analysis
-### Machine Translation
+# Penerapan Deep Learning dalam NLP dan Skenario Nyata
+## Transformer dan BERT
+## Studi Kasus: Text Classification

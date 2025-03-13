@@ -1,9 +1,3 @@
-# Evaluasi Model Deep Learning
-
-## Metrik Evaluasi: 
-### Accuracy
-### Precision
-### Recall
-### F1-score
-
-## Model Fine-Tuning & Transfer Learning
+#  Evaluasi Model Deep Learning: Metrik dan Teknik Fine-Tuning  
+##  Metrik Evaluasi (Accuracy, Precision, Recall, F1-Score, AUC-ROC)  
+##  Teknik Fine-Tuning Model  

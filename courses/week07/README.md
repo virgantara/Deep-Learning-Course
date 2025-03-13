@@ -1,2 +1,4 @@
-# K-Means, DBSCAN dalam deep learning
-# GAN (Generative Adversarial Network)
+# Clustering dan Generative Models 
+##  K-Means, DBSCAN, dan Hierarchical Clustering 
+##  Generative Adversarial Networks (GANs) 
+##  Implementasi Clustering dan GANs 
