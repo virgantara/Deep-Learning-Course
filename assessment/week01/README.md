@@ -34,3 +34,42 @@ Tujuan Diskusi:
 2. 10 menit: Setiap kelompok membuat ringkasan dalam mind map/tabel.
 3. 15 menit: Presentasi singkat dari masing-masing kelompok (maks. 3 menit/kelompok).
 4. 10 menit: Diskusi kelas dan refleksi dari dosen.
+
+## Rubrik Penilaian
+1. Pemahaman Konsep (30 Poin)
+
+- 30: Memahami dengan sangat baik perbedaan ML vs DL dan dapat menjelaskan dengan jelas.
+- 25: Memahami perbedaan ML vs DL dengan baik, tetapi ada sedikit kekurangan dalam penjelasan.
+- 20: Memahami konsep secara umum tetapi kurang mendalam dalam menjelaskan.
+- 15: Pemahaman kurang dan sulit menjelaskan perbedaan ML vs DL.
+- 10: Tidak menunjukkan pemahaman konsep dengan baik.
+
+2. Analisis Studi Kasus (25 Poin)
+- 25: Analisis sangat mendalam, mengaitkan teori dengan studi kasus secara akurat.
+- 20: Analisis cukup baik, tetapi masih ada aspek yang kurang diperhatikan.
+- 15: Analisis masih dangkal dan kurang menghubungkan teori dengan studi kasus.
+- 10: Analisis lemah dan tidak menunjukkan pemahaman terhadap studi kasus.
+- 5: Tidak ada analisis yang jelas terhadap studi kasus.
+
+3. Kualitas Presentasi Kelompok (20 Poin)
+
+- 20: Penyampaian sangat jelas, sistematis, dan menarik.
+- 17: Penyampaian jelas, tetapi masih ada sedikit kurang dalam struktur atau penjelasan.
+- 14: Penyampaian kurang sistematis atau tidak cukup menarik.
+- 10: Penyampaian tidak jelas atau sulit dipahami.
+- 5: Tidak berpartisipasi dalam presentasi.
+
+4. Partisipasi dan Kerja Sama Tim (15 Poin)
+
+- 15: Semua anggota berkontribusi aktif dan diskusi berjalan dengan baik.
+- 12: Sebagian besar anggota aktif, tetapi ada yang kurang berkontribusi.
+- 10: Partisipasi tidak merata dan sebagian anggota pasif.
+- 7: Hanya satu atau dua orang yang aktif, yang lain tidak berpartisipasi.
+- 5: Tidak ada kerja sama tim yang jelas.
+
+5. Kreativitas Penyajian (10 Poin)
+- 10: Menggunakan mind map/tabel yang sangat menarik dan jelas.
+- 8: Visualisasi cukup baik, tetapi bisa lebih menarik.
+- 6: Mind map/tabel ada tetapi kurang jelas atau rapi.
+- 4: Penyajian kurang menarik dan sulit dipahami.
+- 2: Tidak menggunakan mind map/tabel dalam presentasi.
