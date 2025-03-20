@@ -18,7 +18,7 @@ import numpy as np
 from tqdm import tqdm
 ```
 
-## fungsi untuk membaca unpack dataset mentah
+## fungsi untuk unpack dataset mentah
 ```python
 def read_idx(filename):
     """Read IDX file format"""
