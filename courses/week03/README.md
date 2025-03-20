@@ -30,6 +30,8 @@ def read_idx(filename):
 
 
 ## Arsitektur CNN: Convolution, Pooling, Fully Connected Layer
+Tabel 3.1 apabila diterjemahkan ke PyTorch, jadinya seperti ini:
+
 ```python
 class ModelCNN(nn.Module):
     def __init__(self):
@@ -58,11 +60,12 @@ class ModelCNN(nn.Module):
 ```
 
 ## Augmentasi Data
+Merujuk pada Subbab 3.3.2.3 Augmentasi Data
 ```python
 train_transform = transforms.Compose([
-    transforms.RandomRotation(15),
-    transforms.RandomCrop(28, padding=4),
-    transforms.Normalize((0.5,), (0.5,))
+    transforms.RandomRotation(15), # Contoh Augmentasi tipe rotasi
+    transforms.RandomCrop(28, padding=4), # Contoh Augmentasi tipe random croop
+    transforms.Normalize((0.5,), (0.5,)) # merujuk pada subbab 3.3.2.1 tentang Normalisasi data
 ])
 
 test_transform = transforms.Compose([
@@ -205,4 +208,53 @@ TPR = TP / (TP + FN)
 
 for i in range(len(TP)):
     print(f"Kelas {i}: FPR = {FPR[i]:.4f}, TPR (Recall) = {TPR[i]:.4f}")
+```
+
+## Simpan model hanya bobot saja
+```python
+torch.save(model.state_dict(), 'model_cnn_mnist.pth')
+# model.load_state_dict(torch.load('cnn_mnist.pth'))
+```
+
+## Load model hanya bobot saja
+```python
+model.load_state_dict(torch.load('cnn_mnist.pth'))
+```
+
+## Simpan model semua
+```python
+torch.save(model, 'cnn_mnist_full.pth')
+```
+
+## Load model semua
+```python
+model = torch.load('cnn_mnist_full.pth')
+```
+
+## Contoh load model untuk prediksi
+
+```python
+from PIL import Image
+
+model = ModelCNN()
+model.load_state_dict(torch.load('path/to/model.pth'))
+model.eval()
+
+transform = transforms.Compose([
+    transforms.Grayscale(num_output_channels=1),  
+    transforms.Resize((28, 28)),                  
+    transforms.ToTensor(),                        
+    transforms.Normalize((0.5,), (0.5,))          
+])
+
+image_path = 'path/to/sample_input.jpg'  
+image = Image.open(image_path)
+image = transform(image)               
+image = image.unsqueeze(0)             
+
+with torch.no_grad():
+    output = model(image)
+    _, predicted = torch.max(output.data, 1)
+
+print(f'Predicted Class: {predicted.item()}')
 ```
