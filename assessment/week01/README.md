@@ -72,3 +72,52 @@ Tujuan Diskusi:
 - 6: Mind map/tabel ada tetapi kurang jelas atau rapi.
 - 4: Penyajian kurang menarik dan sulit dipahami.
 - 2: Tidak menggunakan mind map/tabel dalam presentasi.
+
+
+## Tema Diskusi:
+### Studi Kasus 1: Deteksi Penyakit dari Citra Medis
+Sebuah rumah sakit ingin mengembangkan sistem otomatis untuk mendeteksi kanker paru-paru dari hasil CT-Scan.
+Tim sebelumnya mencoba menggunakan machine learning tradisional (SVM, Random Forest) dengan fitur buatan tangan (misal tekstur, ukuran nodul), tapi akurasinya belum memuaskan.
+
+Pertanyaan Diskusi:
+ 1. Menurut kalian, apa tantangan mengajarkan komputer untuk mendeteksi kanker dari gambar?
+ 1. Kira-kira lebih mudah pakai aturan buatan manusia atau membiarkan komputer belajar sendiri dari data?
+ 1. Bagaimana kalian membayangkan Deep Learning membantu di kasus ini?
+
+### Studi Kasus 2: Pengenalan Wajah di Smartphone
+Sebuah perusahaan teknologi ingin mengembangkan fitur buka-kunci smartphone berbasis pengenalan wajah.
+Model awal menggunakan pengolahan citra tradisional: ekstraksi fitur wajah (seperti jarak antara mata) lalu diklasifikasikan dengan KNN. Namun, hasilnya tidak akurat untuk kondisi pencahayaan buruk.
+Pertanyaan Diskusi:
+Menurut kalian, apa kesulitan mengenali wajah manusia dengan komputer? 1. Bagaimana DL (seperti CNN) memperbaiki akurasi dalam kondisi nyata?
+ 1. Apa risiko atau masalah lain yang muncul saat menggunakan DL untuk biometrik?
+ 1. Kalau manusia bisa mengenali wajah dengan mudah, kenapa komputer perlu belajar dari banyak data?
+ 1. Mengapa Deep Learning mungkin diperlukan di sini?
+
+### Studi Kasus 3: Mobil Otonom (Self-Driving Car)
+Perusahaan mobil otonom memerlukan sistem yang mampu mengenali rambu lalu lintas, pejalan kaki, dan kendaraan lain dalam berbagai kondisi cuaca. 
+Pertanyaan Diskusi:
+ 1. Apa saja hal yang harus dikenali mobil otonom di jalanan?
+ 1. Menurut kalian, apakah cukup memberi aturan-aturan sederhana supaya mobil berjalan?
+ 1. Bagaimana Deep Learning bisa membuat mobil belajar dari banyak situasi nyata?
+
+### Studi Kasus 4: Penerjemahan Bahasa Otomatis (Machine Translation)
+Sebuah perusahaan ingin membuat aplikasi penerjemah bahasa real-time dari Bahasa Indonesia ke Bahasa Jepang.
+Sistem sebelumnya menggunakan pendekatan berbasis aturan (rule-based) dan machine learning klasik, tapi hasil terjemahannya kaku dan tidak natural.
+Pertanyaan Diskusi:
+ 1. Menurut kalian, apa kesulitan menerjemahkan bahasa manusia?
+ 1. Kenapa tidak cukup kalau hanya pakai daftar kata dan aturan?
+ 1. Apa manfaat membiarkan komputer belajar dari banyak contoh kalimat?
+
+### Studi Kasus 5: Sistem Rekomendasi Film
+Sebuah platform streaming ingin mengembangkan sistem rekomendasi film untuk pengguna baru.
+Pertanyaan Diskusi:
+ 1. Menurut kalian, bagaimana cara komputer tahu film apa yang disukai seseorang?
+ 1. Apakah cukup hanya melihat film yang sudah pernah ditonton?
+ 1. Bagaimana Deep Learning bisa membantu mengenali pola selera seseorang?
+
+### Studi Kasus 6: Chatbot Layanan Pelanggan
+Sebuah perusahaan ingin membuat chatbot otomatis yang bisa menjawab pertanyaan pelanggan melalui chat tanpa perlu campur tangan manusia.
+Pertanyaan Diskusi:
+ 1. Menurut kalian, apa kesulitan membuat chatbot yang bisa mengerti banyak pertanyaan berbeda dari pelanggan?
+ 1. Apakah cukup kalau chatbot hanya diberi daftar pertanyaan dan jawaban?
+ 1. Bagaimana Deep Learning bisa membantu chatbot menjadi lebih pintar dalam memahami bahasa manusia?
