@@ -58,11 +58,19 @@ Kelompok diminta untuk melakukan eksplorasi data, membangun model MLP, melatih m
 
 ### Rubrik Penilaian Tugas Kelompok
 
+| No | Nama                                | Kriteria                                                                                                                | Rentang Nilai | Nama En                          | Bobot |
+|----|-------------------------------------|--------------------------------------------------------------------------------------------------------------------------|----------------|----------------------------------|--------|
+| 1  | Dokumentasi & Laporan               | - Struktur laporan sistematis dan logis                                            | 0–7            | Documentation & Reporting        | 20     |
+|     |                                    | - Format file sesuai (Notebook `.ipynb` + PDF)                                     | 0–5            |                                  |        |
+|     |                                    | - Penulisan kode rapi dan ada dokumentasi/comment yang membantu pemahaman          | 0–8            |                                  |        |
+| 2  | Pemahaman Konsep & Penerapan       | - MLP dibangun sesuai konsep (input-hidden-output, fungsi aktivasi)               | 0–8            | Concept Understanding & Application | 20     |
+|     |                                    | - Proses training dan evaluasi dipahami dan diterapkan dengan benar                | 0–6            |                                  |        |
+|     |                                    | - Penjelasan atau narasi menunjukkan pemahaman konsep dasar                       | 0–6            |                                  |        |
+| 3  | Kompleksitas & Kreativitas Solusi  | - Model dikembangkan melebihi baseline (bandingkan dengan Logistic Regression)     | 0–7            | Solution Complexity & Creativity | 20     |
+|     |                                    | - Visualisasi metrik seperti loss dan accuracy dibuat dan dijelaskan               | 0–6            |                                  |        |
+|     |                                    | - Analisis hasil dan saran perbaikan logis dan kritis                              | 0–7            |                                  |        |
+| 4  | Kolaborasi & Peran Tim             | - Pembagian tugas antar anggota jelas dan adil                                     | 0–15           | Collaboration & Team Role        | 40     |
+|     |                                    | - Refleksi kontribusi individu dicantumkan dalam laporan                           | 0–10           |                                  |        |
+|     |                                    | - Kolaborasi dan hasil kerja menunjukkan koordinasi yang baik                      | 0–15           |                                  |        |
+|    | **Total**                           |                                                                                                                          |                |                                  | **100** |
 
-| No | Nama                                | Kriteria                                                                 | Nama En                          | Bobot |
-|----|-------------------------------------|---------------------------------------------------------------------------|----------------------------------|--------|
-| 1  | Dokumentasi & Laporan               | Laporan disusun sistematis, lengkap, dan sesuai format (.ipynb & .pdf)   | Documentation & Reporting        | 20     |
-| 2  | Pemahaman Konsep & Penerapan       | Menunjukkan pemahaman arsitektur MLP, fungsi aktivasi, training dan evaluasi | Concept Understanding & Application | 20     |
-| 3  | Kompleksitas & Kreativitas Solusi  | Model dikembangkan dengan baik, dibandingkan dengan baseline, ada analisis dan visualisasi | Solution Complexity & Creativity | 20     |
-| 4  | Kolaborasi & Peran Tim             | Tugas dibagi secara adil, kontribusi anggota jelas, refleksi individu disertakan | Collaboration & Team Role        | 40     |
-|    | **Total**                           |                                                                           |                                  | **100** |
