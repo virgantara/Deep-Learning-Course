@@ -58,28 +58,11 @@ Kelompok diminta untuk melakukan eksplorasi data, membangun model MLP, melatih m
 
 ### Rubrik Penilaian Tugas Kelompok
 
-| No | Kriteria Penilaian                  | Deskripsi Penilaian                                                                 | Bobot (%) |
-|----|-------------------------------------|--------------------------------------------------------------------------------------|-----------|
-| 1  | **Eksplorasi Dataset**              | Dataset dimuat dengan benar dan eksplorasi data dilakukan menyeluruh                | 10        |
-|    | - Memuat dataset Iris dengan benar  |                                                                                      | 5         |
-|    | - Analisis jumlah kelas, distribusi fitur, dan insight dari data               | 5         |
-| 2  | **Implementasi Arsitektur MLP**     | Arsitektur model MLP dibangun dengan baik menggunakan PyTorch                       | 10        |
-|    | - Terdapat input, hidden, dan output layer                                     | 5         |
-|    | - Penggunaan fungsi aktivasi yang sesuai (ReLU & Softmax)                      | 5         |
-| 3  | **Proses Pelatihan Model**          | Model dilatih menggunakan konfigurasi dan optimasi yang sesuai                      | 10        |
-|    | - Penggunaan loss function dan optimizer yang tepat                            | 5         |
-|    | - Model disimpan dengan benar (`model.pth`)                                    | 5         |
-| 4  | **Evaluasi Model dan Perbandingan** | Model dievaluasi dengan akurasi dan dibandingkan dengan model sederhana             | 10        |
-|    | - Menghitung akurasi model                                                  | 5         |
-|    | - Membandingkan dengan Logistic Regression + analisis hasil                   | 5         |
-| 5  | **Visualisasi Hasil Pelatihan**     | Grafik loss dan akurasi disajikan dengan baik selama training                       | 10        |
-|    | - Menampilkan grafik loss dan akurasi per epoch                               | 10        |
-| 6  | **Analisis dan Refleksi Kelompok** | Evaluasi performa, refleksi terhadap kelebihan/kekurangan, dan penerapan nyata     | 15        |
-|    | - Analisis performa model & hasil evaluasi                                     | 5         |
-|    | - Kelebihan dan kekurangan MLP dibanding pendekatan lain                      | 5         |
-|    | - Tantangan penerapan model dalam dunia nyata                                 | 5         |
-| 7  | **Kualitas dan Struktur Laporan**   | Kerapihan, format, dan dokumentasi kontribusi anggota                               | 15        |
-|    | - Struktur laporan sistematis dan mudah dibaca                                | 5         |
-|    | - Format file sesuai (Notebook + PDF) + refleksi kontribusi anggota            | 5         |
-|    | - Penjelasan kerja sama dalam tim                                             | 5         |
-| **Total**                                 |                                                                                      | **100**   |
+
+| No | Nama                                | Kriteria                                                                 | Nama En                          | Bobot |
+|----|-------------------------------------|---------------------------------------------------------------------------|----------------------------------|--------|
+| 1  | Dokumentasi & Laporan               | Laporan disusun sistematis, lengkap, dan sesuai format (.ipynb & .pdf)   | Documentation & Reporting        | 20     |
+| 2  | Pemahaman Konsep & Penerapan       | Menunjukkan pemahaman arsitektur MLP, fungsi aktivasi, training dan evaluasi | Concept Understanding & Application | 20     |
+| 3  | Kompleksitas & Kreativitas Solusi  | Model dikembangkan dengan baik, dibandingkan dengan baseline, ada analisis dan visualisasi | Solution Complexity & Creativity | 20     |
+| 4  | Kolaborasi & Peran Tim             | Tugas dibagi secara adil, kontribusi anggota jelas, refleksi individu disertakan | Collaboration & Team Role        | 40     |
+|    | **Total**                           |                                                                           |                                  | **100** |
