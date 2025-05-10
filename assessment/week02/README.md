@@ -3,10 +3,41 @@ Kemampuan yang diharapkan:
 1. Sub-CPMK01-03 - Mahasiswa mampu menjelaskan fungsi aktivasi dan peranannya dalam deep learning
 
 ### Judul Tugas
-**Tugas Individu: Klasifikasi Bunga Iris dengan Multilayer Perceptron (MLP) menggunakan PyTorch**
+**Tugas Kelompok: Klasifikasi Bunga Iris dengan Multilayer Perceptron (MLP)**
 
 ### Deskripsi Tugas
-Pada tugas ini, mahasiswa diminta untuk mengimplementasikan Multilayer Perceptron (MLP) menggunakan PyTorch untuk melakukan klasifikasi bunga Iris berdasarkan dataset Iris dari Scikit-learn. Mahasiswa harus:
+Proyek ini merupakan bagian dari tugas kelompok untuk mata kuliah *[Nama Mata Kuliah]* dengan tujuan untuk mengimplementasikan algoritma **Multilayer Perceptron (MLP)** menggunakan **PyTorch** untuk melakukan klasifikasi bunga Iris berdasarkan dataset Iris dari Scikit-learn.
+
+Kelompok diminta untuk melakukan eksplorasi data, membangun model MLP, melatih model, mengevaluasi performa, serta membandingkannya dengan model sederhana seperti Logistic Regression.
+
+### Tools
+- Python 3.8+
+- PyTorch
+- Scikit-learn
+- Matplotlib
+- Pandas
+- Jupyter Notebook
+
+### Struktur Proyek
+
+```plaintext
+.
+├── model.py               # Arsitektur MLP
+├── train.py               # Skrip pelatihan model
+├── predict.py             # Skrip untuk inference/prediksi data baru
+├── model.pth              # Model hasil pelatihan
+├── iris_logreg.py         # Perbandingan dengan Logistic Regression
+├── laporan_akhir.ipynb    # Laporan utama (Notebook)
+├── laporan_akhir.pdf      # Laporan dalam bentuk PDF
+├── README.md              # Dokumentasi ini
+```
+
+
+## Tujuan Pembelajaran
+- Menjelaskan fungsi aktivasi dalam deep learning.
+- Mengimplementasikan MLP secara langsung menggunakan PyTorch.
+- Membandingkan hasil model deep learning dengan baseline sederhana.
+- Menyusun laporan ilmiah berbasis eksperimen kode dan analisis hasil.
 
 1. Memuat dataset Iris dan melakukan eksplorasi data.
 2. Membuat arsitektur MLP dengan setidaknya 1 hidden layer menggunakan PyTorch.
@@ -25,30 +56,30 @@ Pada tugas ini, mahasiswa diminta untuk mengimplementasikan Multilayer Perceptro
 6. Tambahkan di laporan bagaimana model yang dibuat dapat diterapkan dalam dunia nyata dan apa saja tantangan yang mungkin muncul
 7. Laporan dikumpulkan dalam format notebook (.ipynb) dan PDF.
 
-### Rubrik Penilaian
+### Rubrik Penilaian Tugas Kelompok
 
-| No | Kriteria Penilaian | Bobot (%) |
-|----|--------------------|-----------|
-| 1  | **Eksplorasi Dataset** | 10 |
-|    | - Memuat dataset Iris dengan benar | 5 |
-|    | - Melakukan eksplorasi data (jumlah kelas, distribusi fitur, insight dari data) | 5 |
-| 2  | **Implementasi Arsitektur MLP** | 10 |
-|    | - Membangun model dengan PyTorch (input, hidden, output layer) | 5 |
-|    | - Menggunakan fungsi aktivasi yang sesuai (ReLU, Softmax) | 5 |
-| 3  | **Proses Pelatihan Model** | 10 |
-|    | - Melakukan training dengan loss function dan optimizer yang sesuai | 5 |
-|    | - Menyimpan model yang telah dilatih | 5 |
-| 4  | **Evaluasi Model** | 10 |
-|    | - Menghitung akurasi model dengan benar | 5 |
-|    | - Membandingkan akurasi dengan model sederhana (misal: Logistic Regression) | 5 |
-|    | - Menjelaskan faktor yang memengaruhi hasil akurasi | 5 |
-| 5  | **Visualisasi Hasil** | 10 |
-|    | - Menampilkan grafik loss dan akurasi selama training | 10 |
-| 6  | **Analisis dan Kesimpulan** | 15 |
-|    | - Menjelaskan performa model berdasarkan hasil evaluasi | 5 |
-|    | - Menjelaskan kelebihan dan kelemahan model dibandingkan pendekatan lain | 5 |
-|    | - Menyampaikan kemungkinan tantangan dan perbaikan model di dunia nyata | 5 |
-| 7  | **Kualitas Laporan** | 15 |
-|    | - Struktur laporan jelas dan sistematis | 5 |
-|    | - Format file sesuai instruksi (Notebook + PDF) | 5 |
-| **Total** |  | **100** |
+| No | Kriteria Penilaian                  | Deskripsi Penilaian                                                                 | Bobot (%) |
+|----|-------------------------------------|--------------------------------------------------------------------------------------|-----------|
+| 1  | **Eksplorasi Dataset**              | Dataset dimuat dengan benar dan eksplorasi data dilakukan menyeluruh                | 10        |
+|    | - Memuat dataset Iris dengan benar  |                                                                                      | 5         |
+|    | - Analisis jumlah kelas, distribusi fitur, dan insight dari data               | 5         |
+| 2  | **Implementasi Arsitektur MLP**     | Arsitektur model MLP dibangun dengan baik menggunakan PyTorch                       | 10        |
+|    | - Terdapat input, hidden, dan output layer                                     | 5         |
+|    | - Penggunaan fungsi aktivasi yang sesuai (ReLU & Softmax)                      | 5         |
+| 3  | **Proses Pelatihan Model**          | Model dilatih menggunakan konfigurasi dan optimasi yang sesuai                      | 10        |
+|    | - Penggunaan loss function dan optimizer yang tepat                            | 5         |
+|    | - Model disimpan dengan benar (`model.pth`)                                    | 5         |
+| 4  | **Evaluasi Model dan Perbandingan** | Model dievaluasi dengan akurasi dan dibandingkan dengan model sederhana             | 10        |
+|    | - Menghitung akurasi model                                                  | 5         |
+|    | - Membandingkan dengan Logistic Regression + analisis hasil                   | 5         |
+| 5  | **Visualisasi Hasil Pelatihan**     | Grafik loss dan akurasi disajikan dengan baik selama training                       | 10        |
+|    | - Menampilkan grafik loss dan akurasi per epoch                               | 10        |
+| 6  | **Analisis dan Refleksi Kelompok** | Evaluasi performa, refleksi terhadap kelebihan/kekurangan, dan penerapan nyata     | 15        |
+|    | - Analisis performa model & hasil evaluasi                                     | 5         |
+|    | - Kelebihan dan kekurangan MLP dibanding pendekatan lain                      | 5         |
+|    | - Tantangan penerapan model dalam dunia nyata                                 | 5         |
+| 7  | **Kualitas dan Struktur Laporan**   | Kerapihan, format, dan dokumentasi kontribusi anggota                               | 15        |
+|    | - Struktur laporan sistematis dan mudah dibaca                                | 5         |
+|    | - Format file sesuai (Notebook + PDF) + refleksi kontribusi anggota            | 5         |
+|    | - Penjelasan kerja sama dalam tim                                             | 5         |
+| **Total**                                 |                                                                                      | **100**   |
