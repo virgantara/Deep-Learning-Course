@@ -1,5 +1,36 @@
 # Struktur MLP
 
+## Dataset Klasifikasi Jenis Kelamin
+
+Dataset ini berisi informasi sederhana yang dapat digunakan untuk klasifikasi jenis kelamin berdasarkan **tinggi badan (TB)** dan **berat badan (BB)**. Dataset cocok untuk eksperimen machine learning dasar seperti regresi logistik, decision tree, atau KNN.
+
+## Struktur Dataset
+
+| Kolom         | Deskripsi                            |
+|---------------|---------------------------------------|
+| TB            | Tinggi badan dalam satuan centimeter |
+| BB            | Berat badan dalam satuan kilogram     |
+| Jenis_Kelamin | Target kelas: `Laki-laki` atau `Perempuan` |
+
+## Contoh Data
+
+| TB  | BB | Jenis_Kelamin |
+|-----|----|----------------|
+| 172 | 70 | Laki-laki      |
+| 158 | 52 | Perempuan      |
+| 180 | 82 | Laki-laki      |
+| 165 | 55 | Perempuan      |
+| 177 | 76 | Laki-laki      |
+
+## Format File
+
+Dataset tersedia dalam format CSV:
+
+```csv
+TB,BB,Jenis_Kelamin
+172,70,Laki-laki
+158,52,Perempuan
+```
 
 ## Building an MLP with PyTorch
 
@@ -76,3 +107,4 @@ for epoch in range(num_epochs):
 
 - Model ini memprediksi keluaran, menghitung kerugian, dan memperbarui bobot menggunakan backpropagation.
 - Every 10 epochs, the loss is printed for monitoring.
+

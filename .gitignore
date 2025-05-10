@@ -1,2 +1,5 @@
 .ipynb_checkpoints/*
 __pycache__/**
+
+*.pth
+hasil_inference.csv
