@@ -2,15 +2,23 @@ import argparse
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from dataset import KucingAnjingDataset
-from models import KucingAnjingClassifier
+from MNISTDataset import MNISTDataset
+
 import torch.optim as optim
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 def main(args):
-    train_dataset = KucingAnjingDataset(root_dir=args.train_dir)
-    test_dataset  = KucingAnjingDataset(root_dir=args.test_dir)
+    
+	train_dataset = MNISTDataset(
+	    images_path='data/mnist/train-images.idx3-ubyte',
+	    labels_path='data/mnist/train-labels.idx1-ubyte'
+	)
+
+	test_dataset = MNISTDataset(
+	    images_path='data/mnist/t10k-images.idx3-ubyte',
+	    labels_path='data/mnist/t10k-labels.idx1-ubyte'
+	)
 
     train_loader = DataLoader(train_dataset, batch_size=args.batch_size, shuffle=True)
     test_loader  = DataLoader(test_dataset, batch_size=args.batch_size, shuffle=False)
@@ -97,7 +105,7 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs')
     parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
     parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
-    parser.add_argument('--num_classes', type=int, default=2, help='Number of classes')
+    parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
     parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
     args = parser.parse_args()
     main(args)

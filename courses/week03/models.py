@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-class KucingAnjingClassifier(nn.Module):
+class MnistClassifier(nn.Module):
 
-	def __init__(self, num_classes=2):
-		super(KucingAnjingClassifier, self).__init__()
+	def __init__(self, num_classes=10):
+		super(MnistClassifier, self).__init__()
 
 		self.conv1 = nn.Conv2d(3, 16, kernel_size=2, padding=1)
 		self.pool = nn.MaxPool2d(2, 2)
@@ -13,16 +13,11 @@ class KucingAnjingClassifier(nn.Module):
 		self.conv2 = nn.Conv2d(16, 32, kernel_size=2, padding=1)
 		self.conv3 = nn.Conv2d(32, 64, kernel_size=2, padding=1)
 
-		self.dropout = nn.Dropout(0.5)
-
-		self.bn1 = nn.BatchNorm2d(16)
-
 		self.fc1 = nn.Linear(64 * 28 * 28, 64)
 		self.fc2 = nn.Linear(64, num_classes)
 
 	def forward(self, x):
 		x = self.conv1(x)
-		x = self.bn1(x)
 		x = F.relu(x)
 		x = self.pool(x)
 
@@ -37,7 +32,6 @@ class KucingAnjingClassifier(nn.Module):
 		x = x.view(x.size(0), -1)
 		x = self.fc1(x)
 		x = F.relu(x)
-		x = self.dropout(x)
 
 		x = self.fc2(x)
 
