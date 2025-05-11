@@ -39,6 +39,9 @@ Bab ini membahas pendekatan lanjutan dalam pengembangan model deep learning yang
 - Contoh kode fine-tuning dan ekstraksi fitur di:  
   https://github.com/virgantara/Deep-Learning-Course/tree/master/courses/week04
 
+### Dataset
+Silakan unduh dataset dari [sini](https://drive.google.com/file/d/1C9VNnnQb9petAcc0AoiTV_F_Pc8oqXfI/view?usp=drive_link)
+
 ## Kesimpulan
 
 Transfer Learning memberikan solusi praktis untuk membangun model yang lebih efisien, tahan terhadap overfitting, dan cepat beradaptasi pada domain baru. Melalui bab ini, pembaca dibekali landasan teori, rumus matematis, serta contoh implementasi yang dapat diterapkan langsung dalam berbagai skenario nyata.
