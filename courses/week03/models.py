@@ -13,8 +13,10 @@ class KucingAnjingClassifier(nn.Module):
 		self.conv2 = nn.Conv2d(16, 32, kernel_size=2, padding=1)
 		self.conv3 = nn.Conv2d(32, 64, kernel_size=2, padding=1)
 
-		self.fc1 = nn.Linear(64 * 28 * 28, 128)
-		self.fc2 = nn.Linear(128, num_classes)
+		self.dropout = nn.Dropout(0.5)
+
+		self.fc1 = nn.Linear(64 * 28 * 28, 64)
+		self.fc2 = nn.Linear(64, num_classes)
 
 	def forward(self, x):
 		x = self.conv1(x)
@@ -32,6 +34,7 @@ class KucingAnjingClassifier(nn.Module):
 		x = x.view(x.size(0), -1)
 		x = self.fc1(x)
 		x = F.relu(x)
+		x = self.dropout(x)
 
 		x = self.fc2(x)
 
