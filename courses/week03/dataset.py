@@ -4,6 +4,7 @@ from torch.utils.data import Dataset
 from torchvision import transforms
 import numpy as np
 import struct
+from PIL import Image
 
 class MNISTDataset(Dataset):
     def __init__(self, images_path, labels_path, image_size=28):
