@@ -35,11 +35,12 @@ Bab ini membahas pendekatan lanjutan dalam pengembangan model deep learning yang
 - Kombinasi teknik klasik dan modern (misal: EasyTL)
 
 ## 6. Implementasi di PyTorch
-- Contoh kode fine-tuning dan ekstraksi fitur di:  
-  https://github.com/virgantara/Deep-Learning-Course/tree/master/courses/week04
-
 ### Dataset
-Silakan unduh dataset dari [sini](https://drive.google.com/file/d/1C9VNnnQb9petAcc0AoiTV_F_Pc8oqXfI/view?usp=drive_link)
+1. Silakan unduh dataset dari [sini](https://drive.google.com/file/d/1C9VNnnQb9petAcc0AoiTV_F_Pc8oqXfI/view?usp=drive_link)
+1. Taruh di dalam folder data yang ada di direktori week04
+1. Contoh kode fine-tuning dan ekstraksi fitur di: https://github.com/virgantara/Deep-Learning-Course/tree/master/courses/week04
+
+
 
 ## Kesimpulan
 
