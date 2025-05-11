@@ -33,6 +33,6 @@ class KucingAnjingClassifier(nn.Module):
 		x = self.fc1(x)
 		x = F.relu(x)
 
-		self.fc2(x)
+		x = self.fc2(x)
 
 		return x
