@@ -22,7 +22,7 @@ def main(args):
     model = model.to(device)
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=args.lr)
+    optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay=1e-5)
 
     total_params = sum(p.numel() for p in model.parameters())
     trainable_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
