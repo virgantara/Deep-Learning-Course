@@ -15,11 +15,14 @@ class KucingAnjingClassifier(nn.Module):
 
 		self.dropout = nn.Dropout(0.5)
 
+		self.bn1 = nn.BatchNorm2d(16)
+
 		self.fc1 = nn.Linear(64 * 28 * 28, 64)
 		self.fc2 = nn.Linear(64, num_classes)
 
 	def forward(self, x):
 		x = self.conv1(x)
+		x = self.bn1(x)
 		x = F.relu(x)
 		x = self.pool(x)
 
