@@ -10,6 +10,10 @@ Bab ini membahas pendekatan lanjutan dalam pengembangan model deep learning yang
 - Memahami formulasi matematis dalam proses transfer dan evaluasi fitur
 - Mengimplementasikan pre-training dan fine-tuning menggunakan PyTorch
 
+## Instalasi library
+```cmd
+pip install -r requirements.txt
+```
 
 ## 1. Konsep Dasar Transfer Learning
 - Keterbatasan deep learning konvensional
