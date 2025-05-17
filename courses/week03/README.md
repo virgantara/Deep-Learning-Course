@@ -18,6 +18,9 @@ import numpy as np
 from tqdm import tqdm
 ```
 
+## Download Dataset
+Silakan unduk dataset dari [sini](https://www.kaggle.com/datasets/hojjatk/mnist-dataset)
+
 ## fungsi untuk unpack dataset mentah
 ```python
 def read_idx(filename):

@@ -21,6 +21,25 @@
 1. [Week 15 - Presentasi Hasil Team-Based Project (Team-base Project Presentation)](courses/week15/README.md)
 1. [Week 16 - Evaluasi Akhir Semester & Refleksi (Final Term Evaluation)](courses/week16/README.md)
 
+# Assessment:
+
+1. [Week 1](assessment/week01/README.md)
+1. [Week 2](assessment/week02/README.md)
+1. [Week 3](assessment/week03/README.md)
+1. [Week 4](assessment/week04/README.md)
+1. [Week 5](assessment/week05/README.md)
+1. [Week 6](assessment/week06/README.md)
+1. [Week 7](assessment/week07/README.md)
+1. [Week 8](assessment/week08/README.md)
+1. [Week 9](assessment/week09/README.md)
+1. [Week 10](assessment/week10/README.md)
+1. [Week 11](assessment/week11/README.md)
+1. [Week 12](assessment/week12/README.md)
+1. [Week 13](assessment/week13/README.md)
+1. [Week 14](assessment/week14/README.md)
+1. [Week 15](assessment/week15/README.md)
+1. [Week 16](assessment/week16/README.md)
+
 # Course Learning Outcome (CLO) / Capaian Pembelajaran Mata Kuliah (CPMK)
 1. CPMK01 - Memahami Konsep Dasar Deep Learning (15%)
 2. CPMK02 - Menerapkan Teknik Supervised Learning dalam Deep Learning (20%)
