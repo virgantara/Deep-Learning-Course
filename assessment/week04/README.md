@@ -1,20 +1,23 @@
-# Tugas Individu: Klasifikasi Dua Jenis Objek dengan Transfer Learning
+# Penugasan: Klasifikasi Dua Jenis Objek dengan Transfer Learning
 
-## Deskripsi Tugas
-Setiap mahasiswa diminta untuk membangun model klasifikasi gambar untuk dua jenis objek yang dipilih sendiri (misalnya: jeruk vs apel, sepeda vs motor, jam tangan vs kacamata) menggunakan teknik transfer learning dengan pretrained model (misalnya: VGG16, ResNet, MobileNet, dll).
+Tugas ini terdiri dari dua bagian: **Tugas Individu** dan **Tugas Kelompok**. Mahasiswa diminta untuk mengerjakan klasifikasi citra dua objek menggunakan transfer learning, lalu mendiskusikan dan membandingkan hasil di tingkat kelompok.
 
-Mahasiswa **wajib mengumpulkan dataset sendiri** minimal **200 foto**, terdiri dari **100 foto untuk objek pertama** dan **100 foto untuk objek kedua**. Gunakan variasi teknik **sudut pengambilan gambar** untuk memperkaya dataset (misalnya dari atas, samping, dekat, jauh).
+---
 
-Eksplorasi teknik seperti **fine-tuning**, **augmentasi data**, dan **evaluasi performa model** sangat dianjurkan.
+## A. Tugas Individu
 
-## Output yang Dikumpulkan
-1. File `Jupyter Notebook (.ipynb)` berisi seluruh proses (load data, preprocessing, modeling, training, evaluasi).
-2. Laporan dalam format PDF (maksimal 10 halaman) yang menjelaskan dataset, teknik yang digunakan, dan analisis hasil.
-3. File `README.md` berisi deskripsi cara menjalankan kode.
-4. Tautan GitHub yang berisi semua file proyek.
-5. Tautan GitHub ditaruh di SIAKAD
+### Deskripsi
+Setiap mahasiswa diminta untuk membangun model klasifikasi gambar untuk dua jenis objek pilihan sendiri (misalnya: apel vs jeruk, motor vs sepeda, masker vs tanpa masker) menggunakan pretrained model (misalnya: VGG16, ResNet, MobileNet, dll).
 
-## Rubrik Asesmen
+Mahasiswa wajib mengumpulkan dataset sendiri minimal **200 foto**, terdiri dari **100 foto objek pertama** dan **100 foto objek kedua**, dengan **variasi sudut pengambilan** untuk memperkaya data.
+
+### Output Individu
+- Jupyter Notebook (`.ipynb`)
+- Laporan PDF (maksimal 10 halaman)
+- README.md
+- Tautan GitHub individu dan taruh link Github tugas individu di SIAKAD
+
+### Rubrik Penilaian Individu
 
 | No | Aspek                          | Kriteria Penilaian                                                                                 | A (≥ 80.01)                                                                                                  | B (65.01–80.00)                                                                                     | C (50.01–65.00)                                                                 | D (≤ 50.00)                                                              | Bobot |
 |----|--------------------------------|-----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|---------------------------------------------------------------------------|--------|
@@ -24,3 +27,28 @@ Eksplorasi teknik seperti **fine-tuning**, **augmentasi data**, dan **evaluasi p
 | 4  | Visualisasi & Evaluasi Hasil   | Visualisasi akurasi/loss, confusion matrix, evaluasi model                                         | Visualisasi lengkap dan jelas (training history, confusion matrix), evaluasi akurat dan tajam               | Visualisasi dan evaluasi ada, meskipun kurang mendalam                                            | Visualisasi terbatas, evaluasi tidak lengkap                                  | Tidak ada visualisasi atau evaluasi                                     | 20     |
 | 5  | Analisis Refleksi Pribadi      | Penjelasan pengalaman individu, tantangan, insight yang diperoleh                                 | Refleksi mendalam, menyebutkan tantangan dan solusi, pembelajaran personal terasa kuat                     | Refleksi cukup jelas, menyebutkan proses dan hasil pembelajaran individu                           | Refleksi dangkal, hanya menceritakan proses secara umum                        | Tidak ada refleksi atau hanya mengulang isi laporan teknis                | 15     |
 |    | **Total**                      |                                                                                                     |                                                                                                              |                                                                                                      |                                                                                  |                                                                           | **100** |
+
+---
+
+## B. Tugas Kelompok
+
+### Deskripsi
+Setiap kelompok beranggotakan 3–4 mahasiswa. Setelah menyelesaikan tugas individu, anggota kelompok diminta untuk melakukan:
+
+- Komparasi hasil model antar anggota (misalnya akurasi, loss, confusion matrix)
+- Diskusi pendekatan (augmentasi, pretrained model, fine-tuning)
+- Menarik kesimpulan bersama tentang strategi paling efektif dari eksperimen
+
+### Output Kelompok
+- Laporan PDF gabungan hasil komparasi (maks. 5 halaman)
+- Link GitHub berisi source code, file laporan pdf dan taruh link Github di SIAKAD
+
+### Rubrik Penilaian Kelompok
+
+| No | Aspek                      | Kriteria Penilaian                                                                 | A (≥ 80.01)                                                                       | B (65.01–80.00)                                                         | C (50.01–65.00)                                                | D (≤ 50.00)                                                       | Bobot |
+|----|----------------------------|------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------------|----------------------------------------------------------------|------------------------------------------------------------------|--------|
+| 1  | Komparasi Model            | Perbandingan hasil model dari tiap anggota                                         | Komparasi lengkap dan objektif, mencakup metrik dan analisis kelebihan/kekurangan | Komparasi dilakukan tapi belum mendalam                                | Komparasi kurang jelas, hanya menampilkan hasil akhir saja      | Tidak ada komparasi hasil antar anggota                          | 40     |
+| 2  | Diskusi Strategi           | Pembahasan pendekatan: data, model, augmentasi, fine-tuning                        | Diskusi mendalam dan analisis strategi yang dipakai tiap anggota                  | Diskusi ada tapi belum menyentuh banyak aspek                         | Diskusi umum dan dangkal, kurang eksplorasi                      | Tidak ada diskusi strategi                                       | 30     |
+| 3  | Kesimpulan Bersama         | Ringkasan tentang model dan pendekatan terbaik menurut kelompok                   | Kesimpulan logis, mencerminkan hasil diskusi dan eksperimen                       | Kesimpulan ada namun kurang kuat argumennya                          | Kesimpulan kurang mewakili analisis                             | Tidak ada kesimpulan atau hanya berupa opini tanpa dasar         | 20     |
+| 4  | Koordinasi & Dokumentasi   | Bukti kolaborasi dan pembagian tugas (misal: dokumentasi nama dan peran anggota)  | Dokumentasi kontribusi tiap anggota jelas dan merata                              | Dokumentasi kontribusi ada namun tidak merata                         | Satu-dua anggota dominan, dokumentasi minim                     | Tidak jelas siapa mengerjakan apa                                | 10     |
+|    | **Total**                  |                                                                                    |                                                                                   |                                                                        |                                                                |                                                                  | **100** |
