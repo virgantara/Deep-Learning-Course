@@ -7,7 +7,7 @@
 1. [Week 1 - Pengenalan Deep Learning (Introduction to Deep Learning)](courses/week01)
 1. [Week 2 - Arsitektur MLP dan Fungsi Aktivasi (MLP Architecture and Activation Function)](courses/week02)
 1. [Week 3 - Supervised Learning: Konsep dan Implementasi CNN (Supervised Learning: Concept and Implementation in CNN)](courses/week03)
-1. [Week 4 - Optimasi Model dan Regularisasi (Model Optimization and Regularization)](courses/week04)
+1. [Week 4 - Transfer Learning](courses/week04)
 1. [Week 5 - Recurrent Neural Network (RNN) untuk Data Berurutan (RNN for Sequential Data)](courses/week05)
 1. [Week 6 - Unsupervised Learning: Autoencoder untuk Representasi Fitur (Autoencoder for Representation Learning)](courses/week06)
 1. [Week 7 - Clustering dan Generative Models (Clustering)](courses/week07)
