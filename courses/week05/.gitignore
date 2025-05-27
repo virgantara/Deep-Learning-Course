@@ -3,3 +3,5 @@ pretrains/**
 data/**
 *.txt
 *.zip
+
+.ipynb_checkpoints/**
