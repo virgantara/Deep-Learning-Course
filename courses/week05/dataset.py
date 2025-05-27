@@ -1,5 +1,32 @@
+import torch
 from pathlib import Path
 from torch.utils.data import Dataset
+import re
+
+
+def pad_or_truncate(seq, max_len):
+    return seq[:max_len] + [0] * max(0, max_len - len(seq))
+
+def tokenize(text):
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9\s]", "", text)
+    return text.split()
+
+def encode(text, vocab):
+    return [vocab.get(token, vocab["<UNK>"]) for token in tokenize(text)]
+
+
+
+class IMDBCSVDataset(Dataset):
+    def __init__(self, texts, labels, vocab, seq_len):
+        self.data = [(pad_or_truncate(encode(text, vocab), seq_len), label) for text, label in zip(texts, labels)]
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        x, y = self.data[idx]
+        return torch.tensor(x), torch.tensor(y)
 
 
 class NewsGroupDataset(Dataset):
