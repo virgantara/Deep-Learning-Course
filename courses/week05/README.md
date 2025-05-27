@@ -1,4 +1,19 @@
-# Recurrent Neural Network (RNN) untuk Data Berurutan
+# Week 05 - Deep Learning (Dealing with Sequential Data)
+
+## Dataset
+
+1. Download data IMDB movie review dari [sini](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews)
+1. buat direktori dengan nama data
+1. Copy file csv ke dalam direktori data
+
+## Pre-trained word-embedding GloVe
+
+1. jalankan ini di terminal
+    ```cmd
+    wget http://nlp.stanford.edu/data/glove.6B.zip
+    ```
+1. Buat folder pretrains
+1. Copy glove.6B.zip ke dalam folder pretrains
 
 ## Konsep RNN dan Perbedaannya dengan CNN
 

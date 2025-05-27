@@ -1,0 +1,5 @@
+*.csv
+pretrains/**
+data/**
+*.txt
+*.zip
