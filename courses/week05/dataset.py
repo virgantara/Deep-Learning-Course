@@ -2,7 +2,8 @@ import torch
 from pathlib import Path
 from torch.utils.data import Dataset
 import re
-
+import os
+import cv2
 
 def pad_or_truncate(seq, max_len):
     return seq[:max_len] + [0] * max(0, max_len - len(seq))
@@ -14,6 +15,50 @@ def tokenize(text):
 
 def encode(text, vocab):
     return [vocab.get(token, vocab["<UNK>"]) for token in tokenize(text)]
+
+class HMDBDataset(Dataset):
+    def __init__(self, root_dir, classes, transform=None, frames_per_video=16):
+        self.samples = []
+        self.transform = transform
+        self.classes = classes
+        self.class_to_idx = {cls: idx for idx, cls in enumerate(classes)}
+        self.frames_per_video = frames_per_video
+
+        for cls in classes:
+            class_path = os.path.join(root_dir, cls)
+            for file in os.listdir(class_path):
+                if file.endswith(".avi"):
+                    self.samples.append((os.path.join(class_path, file), self.class_to_idx[cls]))
+
+    def __len__(self):
+        return len(self.samples)
+
+    def __getitem__(self, idx):
+        video_path, label = self.samples[idx]
+        frames = self.load_video_frames(video_path)
+        if self.transform:
+            frames = [self.transform(frame) for frame in frames]
+        video_tensor = torch.stack(frames)  # shape: (T, C, H, W)
+        return video_tensor, label
+
+    def load_video_frames(self, video_path):
+        cap = cv2.VideoCapture(video_path)
+        frames = []
+        while len(frames) < self.frames_per_video:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            frame = cv2.resize(frame, (112, 112))
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            frame = torch.tensor(frame).permute(2, 0, 1).float() / 255.0
+            frames.append(frame)
+        cap.release()
+        # Padding or truncating
+        if len(frames) < self.frames_per_video:
+            frames += [frames[-1]] * (self.frames_per_video - len(frames))
+        else:
+            frames = frames[:self.frames_per_video]
+        return frames
 
 
 
