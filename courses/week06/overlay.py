@@ -36,7 +36,7 @@ for i, (gx, gy) in enumerate(grid_points):
 
 # Select a subset of embeddings to overlay (e.g., 500 random points)
 subset_idx = np.random.choice(len(embeddings), size=500, replace=False)
-ax.scatter(
+sc = ax.scatter(
     embeddings[subset_idx, 0],
     embeddings[subset_idx, 1],
     c=labels[subset_idx],
@@ -45,7 +45,8 @@ ax.scatter(
     alpha=0.6
 )
 
-plt.colorbar(label='Label Pakaian (0–9)')
+plt.colorbar(sc, ax=ax, label='Label Pakaian (0–9)')
+
 ax.set_title("Decoded Image Grid with Sparse Overlay")
 ax.set_xlabel("Dimensi 1")
 ax.set_ylabel("Dimensi 2")
