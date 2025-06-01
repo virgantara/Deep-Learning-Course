@@ -8,6 +8,10 @@ Dataset MNIST asli berisi banyak angka tulisan tangan. Komunitas AI/ML/Data Scie
 
 
 Download dari [sini](https://www.kaggle.com/datasets/zalando-research/fashionmnist)
-## Konsep Autoencoder 
-## Variational Autoencoder (VAE) 
-## Aplikasi Autoencoder dalam Anomaly Detection 
+
+
+## Urutan eksekusi file sesuai materi di buku
+1. `main.py`
+1. `rekonstruksi.py`
+1. `visualisasi_latent.py`
+1. `generate.py`
