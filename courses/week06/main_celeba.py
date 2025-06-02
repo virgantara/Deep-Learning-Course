@@ -66,10 +66,9 @@ def main(args):
                 recon, mu, logvar = model(imgs)
                 print(f"mu: mean={mu.mean().item():.2f}, std={mu.std().item():.2f}")
                 print(f"logvar: mean={logvar.mean().item():.2f}, std={logvar.std().item():.2f}")
-                print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
-
-                loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
                 
+                loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
+                print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
                 optimizer.zero_grad()
                 loss.backward()
                 optimizer.step()
