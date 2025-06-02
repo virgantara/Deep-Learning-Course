@@ -1,57 +1,70 @@
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
 from model import Autoencoder
-from dataset import FashionMNISTDataset
-from torch.utils.data import DataLoader
-from torchvision import transforms
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = Autoencoder().to(device)
-model.load_state_dict(torch.load("model.pth", map_location=device,weights_only=True))
+model.load_state_dict(torch.load("model.pth", map_location=device, weights_only=True))
 model.eval()
 
-# Load embeddings dan label asli
-embeddings = np.load("embeddings.npy")  # shape: (N, 2)
-labels = np.load("labels.npy")          # shape: (N,) — harus disiapkan saat visualisasi sebelumnya
-x = np.linspace(-10, 7.5, 30)
-y = np.linspace(-2.5, 8.5, 30)
-grid_x, grid_y = np.meshgrid(x, y)
-grid_points = np.stack([grid_x.ravel(), grid_y.ravel()], axis=1)  # (900, 2)
+# Load embeddings (N, 2) and labels (N,)
+embeddings = np.load("embeddings.npy")
+labels = np.load("labels.npy")
 
-# Decode each point in the grid
+# Define grid points based on latent space
+x = np.linspace(np.min(embeddings[:, 0]), np.max(embeddings[:, 0]), 20)
+y = np.linspace(np.min(embeddings[:, 1]), np.max(embeddings[:, 1]), 20)
+grid_x, grid_y = np.meshgrid(x, y)
+grid_points = np.stack([grid_x.ravel(), grid_y.ravel()], axis=1)
+
+# Decode grid
 with torch.no_grad():
     latent = torch.tensor(grid_points, dtype=torch.float32).to(device)
     reconstructions = model.decoder(latent).cpu().numpy()
 
-# Begin plotting
 fig, ax = plt.subplots(figsize=(10, 10))
 
-# Show decoded images on the grid
+cell_w = (x[1] - x[0])
+cell_h = (y[1] - y[0])
+
+gap = 0.5  
+
 for i, (gx, gy) in enumerate(grid_points):
     img = reconstructions[i].squeeze()
-    extent = [gx - 0.5, gx + 0.5, gy - 0.5, gy + 0.5]
-    ax.imshow(img, cmap='gray', extent=extent, origin='lower', interpolation='bilinear')
+    extent = [
+        gx - (cell_w * gap) / 2,
+        gx + (cell_w * gap) / 2,
+        gy - (cell_h * gap) / 2,
+        gy + (cell_h * gap) / 2,
+    ]
+    ax.imshow(img, cmap='gray', extent=extent, origin='lower', interpolation='bilinear', alpha=0.7)
 
-# Select a subset of embeddings to overlay (e.g., 500 random points)
+
+# Overlay colored latent embeddings
 subset_idx = np.random.choice(len(embeddings), size=500, replace=False)
-sc = ax.scatter(
+scatter = ax.scatter(
     embeddings[subset_idx, 0],
     embeddings[subset_idx, 1],
     c=labels[subset_idx],
-    cmap='tab10',
-    s=10,
-    alpha=0.6
+    cmap='Spectral',
+    s=128,
+    alpha=1
 )
 
-plt.colorbar(sc, ax=ax, label='Label Pakaian (0–9)')
+# Custom inset colorbar, matching latent space height
+# from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+# cax = inset_axes(ax, width="3%", height="100%", loc='right', borderpad=2)
+# cbar = fig.colorbar(scatter, cax=cax)
+# cbar.set_label("FashionMNIST Class", fontsize=12)
+# cbar.ax.tick_params(labelsize=10)
 
-ax.set_title("Decoded Image Grid with Sparse Overlay")
-ax.set_xlabel("Dimensi 1")
-ax.set_ylabel("Dimensi 2")
-ax.set_xlim(-10.5, 8)
-ax.set_ylim(-3, 9)
+# Format axes
+ax.set_title("Latent Space Grid with Decoded Reconstructions", fontsize=14)
+ax.set_xlabel("Latent Dimension 1", fontsize=12)
+ax.set_ylabel("Latent Dimension 2", fontsize=12)
+ax.tick_params(axis='both', labelsize=10)
+ax.set_aspect("equal")
 plt.grid(False)
 plt.tight_layout()
 plt.show()

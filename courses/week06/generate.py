@@ -23,17 +23,18 @@ gs = gridspec.GridSpec(3, 9)  # 3 baris, 9 kolom
 # Scatter plot di posisi kiri
 ax_scatter = fig.add_subplot(gs[:, :3])  # seluruh baris, kolom 0–2
 ax_scatter.scatter(embeddings_np[:, 0], embeddings_np[:, 1], c='black', s=1, alpha=0.3)
-ax_scatter.scatter(samples[:, 0], samples[:, 1], c='deepskyblue', s=20)
-ax_scatter.set_title("Latent Space + Sampled Points")
-ax_scatter.set_xlabel("Dimensi 1")
-ax_scatter.set_ylabel("Dimensi 2")
+ax_scatter.scatter(samples[:, 0], samples[:, 1], c='deepskyblue', s=24)
+ax_scatter.set_title("Latent Space + Sampled Points", fontsize=16)
+ax_scatter.set_xlabel("Dimensi 1", fontsize=14)
+ax_scatter.set_ylabel("Dimensi 2", fontsize=14)
+ax_scatter.tick_params(axis='both', labelsize=14) 
 
 # Grid 3x6 hasil rekonstruksi di kanan (kolom 3–8)
 for i in range(18):
     row, col = divmod(i, 6)
     ax_img = fig.add_subplot(gs[row, 3 + col])
     ax_img.imshow(reconstructions[i].squeeze(), cmap='gray')
-    ax_img.set_title(f"[{samples[i][0]:.1f}, {samples[i][1]:.1f}]", fontsize=7)
+    ax_img.set_title(f"[{samples[i][0]:.1f}, {samples[i][1]:.1f}]", fontsize=14)
     ax_img.axis("off")
 
 plt.tight_layout()

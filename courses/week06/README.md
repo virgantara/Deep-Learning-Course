@@ -15,3 +15,4 @@ Download dari [sini](https://www.kaggle.com/datasets/zalando-research/fashionmni
 1. `rekonstruksi.py`
 1. `visualisasi_latent.py`
 1. `generate.py`
+1. `overlay`
