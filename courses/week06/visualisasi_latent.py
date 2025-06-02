@@ -12,12 +12,11 @@ def main(args):
 
     if args.model_name == 'AE':
         model = Autoencoder().to(device)
-        model.load_state_dict(torch.load("model.pth", map_location=device, weights_only=True))
         
     elif args.model_name == 'VAE':
         model = VAE().to(device)
-        model.load_state_dict(torch.load("model_vae.pth", map_location=device, weights_only=True))
         
+    model.load_state_dict(torch.load("model_"+args.model_name+".pth", map_location=device, weights_only=True))
     model.eval()
 
     transform = transforms.Compose([
