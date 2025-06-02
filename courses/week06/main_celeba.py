@@ -22,25 +22,17 @@ def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     kl_per_sample = kl_elementwise.sum(dim=1)  # [batch]
     kl_loss = kl_per_sample.sum()
 
-    print(f"KL per sample (min/max/mean): {kl_per_sample.min().item():.2f}/{kl_per_sample.max().item():.2f}/{kl_per_sample.mean().item():.2f}")
+    # print(f"KL per sample (min/max/mean): {kl_per_sample.min().item():.2f}/{kl_per_sample.max().item():.2f}/{kl_per_sample.mean().item():.2f}")
 
     return recon_loss + beta * kl_loss, recon_loss, kl_loss
 
 def main(args):
-
-   
-
-
     train_dataset = CelebADataset(root_dir='./data/celeba/Img',transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-    if args.model_name == 'AE':
-        model = Autoencoder().to(device)
-        criterion = nn.MSELoss()
-    elif args.model_name == 'VAE':
-        model = VAE().to(device)
+    
+    model = VAE().to(device)
     
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
@@ -53,29 +45,19 @@ def main(args):
         total_kl = 0
         for imgs in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
             imgs = imgs.to(device)
+            recon, mu, logvar = model(imgs)
+            # print(f"mu: mean={mu.mean().item():.2f}, std={mu.std().item():.2f}")
+            # print(f"logvar: mean={logvar.mean().item():.2f}, std={logvar.std().item():.2f}")
             
-            if args.model_name == 'AE':
-                outputs = model(imgs)
-                loss = criterion(outputs, imgs)
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
+            loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
+            # print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
 
-                total_loss += loss.item()
-            elif args.model_name == 'VAE':
-                recon, mu, logvar = model(imgs)
-                print(f"mu: mean={mu.mean().item():.2f}, std={mu.std().item():.2f}")
-                print(f"logvar: mean={logvar.mean().item():.2f}, std={logvar.std().item():.2f}")
-                
-                loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
-                print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
-
-                total_loss += loss.item()
-                total_recon += recon_loss.item()
-                total_kl += kl_loss.item()
+            total_loss += loss.item()
+            total_recon += recon_loss.item()
+            total_kl += kl_loss.item()
 
         train_loss.append(total_loss / len(train_loader))
         
@@ -84,29 +66,36 @@ def main(args):
         
         print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss/len(train_loader):.4f}")
 
+    plt.figure(figsize=(10, 5))
+    plt.plot(train_loss, label='Total Loss')
+    plt.plot(recon_losses, label='Reconstruction Loss')
+    plt.plot(kl_losses, label='KL Divergence Loss')
+    plt.xlabel('Epoch')
+    plt.ylabel('Loss')
+    plt.title(f'Training Loss - {args.model_name}')
+    plt.legend()
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(f'train_loss_{args.model_name}.png')  # Save to file
     torch.save(model.state_dict(), 'model_celeba_'+args.model_name+'.pth')
+    plt.show()
+
+    
 
 def show_reconstruction(args):
     train_dataset = CelebADataset(root_dir='./data/celeba/Img',transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    if args.model_name == 'AE':
-        model = Autoencoder().to(device)
-    elif args.model_name == 'VAE':    
-        model = VAE().to(device)
+    model = VAE().to(device)
     
     model.load_state_dict(torch.load("model_celeba_"+args.model_name+".pth", map_location=device, weights_only=True))
     model.eval()
     with torch.no_grad():
         test_imgs, _,_ = next(iter(train_loader))
         test_imgs = test_imgs.to(device)
-
-        if args.model_name == 'AE':
-            outputs = model(test_imgs)
-        elif args.model_name == 'VAE':
-            outputs, _, _ = model(test_imgs)
+        
+        outputs, _, _ = model(test_imgs)
 
         # Show original and reconstructed
         n = 10
