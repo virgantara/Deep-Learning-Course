@@ -51,7 +51,11 @@ def main(args):
             elif args.model_name == 'VAE':
                 recon, mu, logvar = model(imgs)
                 loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
-            
+                
+                optimizer.zero_grad()
+                loss.backward()
+                optimizer.step()
+
                 total_loss += loss.item()
                 total_recon += recon_loss.item()
                 total_kl += kl_loss.item()
