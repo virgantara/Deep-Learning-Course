@@ -30,7 +30,7 @@ def main(args):
     criterion = nn.MSELoss()
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-    epochs = 10
+    epochs = args.epochs
 
     train_loss, recon_losses, kl_losses = [], [], []
     for epoch in range(epochs):
@@ -106,6 +106,7 @@ def show_reconstruction(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_name', type=str, default='AE', help='Model Name')
+    parser.add_argument('--epochs', type=int, default=10, help='Num of epoch')
     args = parser.parse_args()
     main(args)
     show_reconstruction(args)
