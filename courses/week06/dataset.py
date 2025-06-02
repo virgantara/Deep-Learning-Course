@@ -3,6 +3,29 @@ from torch.utils.data import Dataset
 import pandas as pd
 import numpy as np
 import torchvision.transforms as transforms
+import os
+from PIL import Image
+
+class CelebADataset(Dataset):
+    def __init__(self, root_dir, transform=None):
+        
+        self.root_dir = root_dir
+        self.image_files = sorted([
+            f for f in os.listdir(root_dir) if f.endswith('.jpg')
+        ])
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_files)
+
+    def __getitem__(self, idx):
+        img_path = os.path.join(self.root_dir, self.image_files[idx])
+        img = Image.open(img_path).convert('RGB')
+
+        if self.transform:
+            img = self.transform(img)
+
+        return img
 
 class FashionMNISTDataset(Dataset):
     def __init__(self, csv_file, transform=None):

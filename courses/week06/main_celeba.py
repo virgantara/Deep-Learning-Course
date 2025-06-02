@@ -5,9 +5,10 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 import argparse
+from torchvision import transforms
 
-from model import Autoencoder, VAE
-from dataset import FashionMNISTDataset
+from model_celeb import VAE
+from dataset import FashionMNISTDataset, CelebADataset
 
 def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     recon_loss = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
@@ -15,19 +16,25 @@ def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     return recon_loss  + beta * kl_loss, recon_loss, kl_loss
 
 def main(args):
-    train_dataset = FashionMNISTDataset('./data/fashion-mnist/fashion-mnist_train.csv')
-    test_dataset = FashionMNISTDataset('./data/fashion-mnist/fashion-mnist_test.csv')
 
+    transform = transforms.Compose([
+        transforms.CenterCrop(178),
+        transforms.Resize((32, 32)),  # match your VAE input
+        transforms.ToTensor(),        # values in [0, 1]
+    ])
+
+
+    train_dataset = CelebADataset(root_dir='./data/celeba/Img',transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     if args.model_name == 'AE':
         model = Autoencoder().to(device)
+        criterion = nn.MSELoss()
     elif args.model_name == 'VAE':
         model = VAE().to(device)
-
-    criterion = nn.MSELoss()
+    
     optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
     epochs = args.epochs
@@ -37,7 +44,7 @@ def main(args):
         total_loss = 0
         total_recon = 0
         total_kl = 0
-        for imgs, _, _ in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
+        for imgs in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
             imgs = imgs.to(device)
             
             if args.model_name == 'AE':
@@ -109,7 +116,7 @@ def show_reconstruction(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_name', type=str, default='AE', help='Model Name')
+    parser.add_argument('--model_name', type=str, default='VAE', help='Model Name')
     parser.add_argument('--dataset_name', type=str, default='mnist', help='Dataset Name')
     parser.add_argument('--epochs', type=int, default=10, help='Num of epoch')
     args = parser.parse_args()
