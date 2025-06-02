@@ -92,7 +92,7 @@ def show_reconstruction(args):
     model.load_state_dict(torch.load("model_celeba_"+args.model_name+".pth", map_location=device, weights_only=True))
     model.eval()
     with torch.no_grad():
-        test_imgs, _,_ = next(iter(train_loader))
+        test_imgs = next(iter(train_loader))
         test_imgs = test_imgs.to(device)
         
         outputs, _, _ = model(test_imgs)
