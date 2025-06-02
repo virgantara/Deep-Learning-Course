@@ -10,18 +10,25 @@ from torchvision import transforms
 from model_celeb import VAE
 from dataset import FashionMNISTDataset, CelebADataset
 
+transform = transforms.Compose([
+    transforms.CenterCrop(178),
+    transforms.Resize((32, 32)),  # match your VAE input
+    transforms.ToTensor(),        # values in [0, 1]
+])
+
 def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     recon_loss = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
-    kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    return recon_loss  + beta * kl_loss, recon_loss, kl_loss
+    kl_elementwise = -0.5 * (1 + logvar - mu.pow(2) - logvar.exp())  # [batch, z_dim]
+    kl_per_sample = kl_elementwise.sum(dim=1)  # [batch]
+    kl_loss = kl_per_sample.sum()
+
+    print(f"KL per sample (min/max/mean): {kl_per_sample.min().item():.2f}/{kl_per_sample.max().item():.2f}/{kl_per_sample.mean().item():.2f}")
+
+    return recon_loss + beta * kl_loss, recon_loss, kl_loss
 
 def main(args):
 
-    transform = transforms.Compose([
-        transforms.CenterCrop(178),
-        transforms.Resize((32, 32)),  # match your VAE input
-        transforms.ToTensor(),        # values in [0, 1]
-    ])
+   
 
 
     train_dataset = CelebADataset(root_dir='./data/celeba/Img',transform=transform)
@@ -57,6 +64,10 @@ def main(args):
                 total_loss += loss.item()
             elif args.model_name == 'VAE':
                 recon, mu, logvar = model(imgs)
+                print(f"mu: mean={mu.mean().item():.2f}, std={mu.std().item():.2f}")
+                print(f"logvar: mean={logvar.mean().item():.2f}, std={logvar.std().item():.2f}")
+                print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
+
                 loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
                 
                 optimizer.zero_grad()
