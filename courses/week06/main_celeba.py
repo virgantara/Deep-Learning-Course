@@ -8,7 +8,7 @@ import argparse
 from torchvision import transforms
 
 from model_celeb import VAE
-from dataset import FashionMNISTDataset, CelebADataset
+from dataset import CelebADataset
 
 transform = transforms.Compose([
     transforms.CenterCrop(178),
@@ -103,13 +103,18 @@ def show_reconstruction(args):
         for i in tqdm(range(n),desc="showing reconstruction"):
             # original
             ax = plt.subplot(2, n, i + 1)
-            plt.imshow(test_imgs[i].cpu().squeeze(), cmap='gray')
+            img = test_imgs[i].cpu().permute(1, 2, 0).numpy()  # CHW → HWC
+            plt.imshow(img)
             ax.axis("off")
             
             # reconstructed
             ax = plt.subplot(2, n, i + 1 + n)
-            plt.imshow(outputs[i].cpu().squeeze(), cmap='gray')
+            recon = outputs[i].cpu().permute(1, 2, 0).numpy()
+            plt.imshow(recon)
             ax.axis("off")
+            
+        plt.suptitle(f"Reconstruction Samples - {args.model_name}", fontsize=16)
+        plt.tight_layout()
         plt.show()
 
 if __name__ == '__main__':
