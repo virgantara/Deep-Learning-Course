@@ -30,7 +30,7 @@ def main(args):
     # Scatter plot di posisi kiri
     ax_scatter = fig.add_subplot(gs[:, :3])  # seluruh baris, kolom 0–2
     ax_scatter.scatter(embeddings_np[:, 0], embeddings_np[:, 1], c='black', s=1, alpha=0.3)
-    ax_scatter.scatter(samples[:, 0], samples[:, 1], c='deepskyblue', s=24)
+    ax_scatter.scatter(samples[:, 0], samples[:, 1], c='deepskyblue', s=48)
     ax_scatter.set_title("Latent Space + Sampled Points", fontsize=16)
     ax_scatter.set_xlabel("Dimensi 1", fontsize=14)
     ax_scatter.set_ylabel("Dimensi 2", fontsize=14)
