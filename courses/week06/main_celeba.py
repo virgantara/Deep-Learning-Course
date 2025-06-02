@@ -74,11 +74,10 @@ def main(args):
         
         print(f"Epoch [{epoch+1}/{epochs}], Loss: {total_loss/len(train_loader):.4f}")
 
-    torch.save(model.state_dict(), 'model_'+args.model_name+'.pth')
+    torch.save(model.state_dict(), 'model_celeba_'+args.model_name+'.pth')
 
 def show_reconstruction(args):
-    train_dataset = FashionMNISTDataset('./data/fashion-mnist/fashion-mnist_train.csv')
-
+    train_dataset = CelebADataset(root_dir='./data/celeba/Img',transform=transform)
     train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -88,7 +87,7 @@ def show_reconstruction(args):
     elif args.model_name == 'VAE':    
         model = VAE().to(device)
     
-    model.load_state_dict(torch.load("model_"+args.model_name+".pth", map_location=device, weights_only=True))
+    model.load_state_dict(torch.load("model_celeba_"+args.model_name+".pth", map_location=device, weights_only=True))
     model.eval()
     with torch.no_grad():
         test_imgs, _,_ = next(iter(train_loader))
