@@ -10,19 +10,21 @@ from tqdm import tqdm
 train_dataset = FashionMNISTDataset('./data/fashion-mnist/fashion-mnist_train.csv')
 test_dataset = FashionMNISTDataset('./data/fashion-mnist/fashion-mnist_test.csv')
 
-train_loader = DataLoader(train_dataset, batch_size=256, shuffle=True)
+train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = VAE().to(device)
 
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-def vae_loss(recon_x, x, mu, logvar):
+def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     recon_loss = nn.functional.binary_cross_entropy(recon_x, x, reduction='sum')
     kl_loss = -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp())
-    return recon_loss + kl_loss, recon_loss, kl_loss
+    return recon_loss  + beta * kl_loss, recon_loss, kl_loss
 
-epochs = 10
+epochs = 20
+train_loss, recon_losses, kl_losses = [], [], []
+
 for epoch in range(epochs):
     total_loss = 0
     total_recon = 0
@@ -42,7 +44,20 @@ for epoch in range(epochs):
         total_recon += recon_loss.item()
         total_kl += kl_loss.item()
 
+    train_loss.append(total_loss / len(train_loader))
+    recon_losses.append(total_recon / len(train_loader))
+    kl_losses.append(total_kl / len(train_loader))
+
     print(f"Epoch [{epoch+1}/{epochs}] | Loss: {total_loss/len(train_loader):.2f} | Recon: {total_recon/len(train_loader):.2f} | KL: {total_kl/len(train_loader):.2f}")
+
+plt.plot(train_loss, label='Total Loss')
+plt.plot(recon_losses, label='Reconstruction Loss')
+plt.plot(kl_losses, label='KL Loss')
+plt.xlabel("Epoch")
+plt.ylabel("Loss")
+plt.title("VAE Loss Components")
+plt.legend()
+plt.show()
 
 
 torch.save(model.state_dict(), 'model_vae.pth')
