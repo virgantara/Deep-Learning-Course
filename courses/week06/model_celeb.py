@@ -38,7 +38,7 @@ class Encoder(nn.Module):
         x = self.leaky_relu(self.bn3(self.conv3(x)))
         x = self.leaky_relu(self.bn4(self.conv4(x)))
 
-        self.shape_before_flattening = x.shape[1:]
+        shape_before_flattening = x.shape[1:]
         
         x = self.flatten(x)
 
@@ -46,7 +46,7 @@ class Encoder(nn.Module):
         logvar = self.fc_logvar(x)
         z = self._reparameterize(mu, logvar)
 
-        return z, mu, logvar, self.shape_before_flattening
+        return z, mu, logvar, shape_before_flattening
 
 
 
@@ -67,16 +67,16 @@ class Decoder(nn.Module):
 
         self.deconv4 = nn.ConvTranspose2d(num_features, out_channels, kernel_size=4, stride=2, padding=1)  # 16→32
 
-        self.relu = nn.LeakyReLU(0.2)
+        self.leaky_relu = nn.LeakyReLU(0.2)
         self.sigmoid = nn.Sigmoid()  # Output image range [0, 1]
 
     def forward(self, z, shape_before_flattening):
         x = self.fc(z)
         x = x.view(-1, *shape_before_flattening)  # reshape into conv feature shape
 
-        x = self.relu(self.bn1(self.deconv1(x)))
-        x = self.relu(self.bn2(self.deconv2(x)))
-        x = self.relu(self.bn3(self.deconv3(x)))
+        x = self.leaky_relu(self.bn1(self.deconv1(x)))
+        x = self.leaky_relu(self.bn2(self.deconv2(x)))
+        x = self.leaky_relu(self.bn3(self.deconv3(x)))
         x = self.sigmoid(self.deconv4(x))  # Final layer
 
         return x

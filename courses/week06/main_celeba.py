@@ -22,8 +22,6 @@ def vae_loss(recon_x, x, mu, logvar, beta=1.0):
     kl_per_sample = kl_elementwise.sum(dim=1)  # [batch]
     kl_loss = kl_per_sample.sum()
 
-    # print(f"KL per sample (min/max/mean): {kl_per_sample.min().item():.2f}/{kl_per_sample.max().item():.2f}/{kl_per_sample.mean().item():.2f}")
-
     return recon_loss + beta * kl_loss, recon_loss, kl_loss
 
 def main(args):
@@ -46,11 +44,9 @@ def main(args):
         for imgs in tqdm(train_loader, desc=f"Epoch {epoch+1}"):
             imgs = imgs.to(device)
             recon, mu, logvar = model(imgs)
-            # print(f"mu: mean={mu.mean().item():.2f}, std={mu.std().item():.2f}")
-            # print(f"logvar: mean={logvar.mean().item():.2f}, std={logvar.std().item():.2f}")
-            
+
             loss, recon_loss, kl_loss = vae_loss(recon, imgs, mu, logvar)
-            # print(f"KL loss (total): {kl_loss.item():.2f}, per sample: {kl_loss.item() / imgs.size(0):.2f}")
+            
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
