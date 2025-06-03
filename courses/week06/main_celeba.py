@@ -120,4 +120,4 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=10, help='Num of epoch')
     args = parser.parse_args()
     main(args)
-    show_reconstruction(args)
+    # show_reconstruction(args)

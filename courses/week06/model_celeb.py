@@ -97,7 +97,7 @@ if __name__ == '__main__':
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = VAE().to(device)
-    print(model)
+    print(model.decoder)
     x = x.to(device)
     y, mu, logvar = model(x)
     total_params = sum(p.numel() for p in model.parameters())
