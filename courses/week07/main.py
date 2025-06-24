@@ -137,7 +137,7 @@ def compare_images(img1, img2):
 def test(args):
 	model = Generator(args.embedding_dim)
 
-	model.load_state_dict(torch.load('output/weights_dcgan/generator.pt', map_location=torch.device('cpu')))  
+	model.load_state_dict(torch.load(args.model_path, map_location=torch.device('cpu')))  
 
 	model.eval() 
 
@@ -211,6 +211,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--exp_name', type=str, default='exp', metavar='N',
                         help='Name of the experiment')
+    parser.add_argument('--model_path', type=str, default='output/weights/_dcgan', metavar='N',
+                        help='path of model')
     parser.add_argument('--lr_d', type=float, default=0.0002, metavar='LR',
                         help='learning rate (default: 0.001, 0.1 if using sgd)')
     parser.add_argument('--lr_g', type=float, default=0.0001, metavar='LR',
