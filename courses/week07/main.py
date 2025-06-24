@@ -131,6 +131,81 @@ def main(args):
 	torch.save(discriminator.state_dict(), path_to_dir + '/weights_dcgan/discriminator.pt')
 
 
+def compare_images(img1, img2):
+    return torch.mean(torch.abs(img1 - img2)).item()
+
+def test(args):
+	model = Generator(args.embedding_dim)
+
+	model.load_state_dict(torch.load('output/weights_dcgan/generator.pt', map_location=torch.device('cpu')))  
+
+	model.eval() 
+
+	path_to_images = args.dataset_path 
+	path_to_dir = args.output_path
+
+	batch_size = args.batch_size 
+	embedding_dim = args.embedding_dim 
+
+
+	transform = transforms.Compose([
+	    transforms.Grayscale(), # 
+	    transforms.Resize((64, 64)), # 
+	    transforms.ToTensor(), # 
+	    transforms.Normalize((0.5), (0.5)) # 
+	])
+
+	paths_images = list(Path(path_to_images).iterdir()) # 
+	random.shuffle(paths_images) # 
+	paths_train = paths_images[:int(len(paths_images) * coeff_train)] # 
+	names_train = [x.name for x in paths_train]
+
+	data_train = DatasetImages(paths_train, transform=transform)
+
+	data = DataLoader(data_train, shuffle=False, num_workers=8)
+
+	r, c = 3, 5
+	noise = torch.randn(r * c, embedding_dim, device='cpu')
+	with torch.no_grad():
+	    gen_imgs = model(noise).cpu()
+
+	fig, axs = plt.subplots(r, c, figsize=(10, 6))
+	fig.suptitle("Сгенерированные изображения")
+	cnt = 0
+	for i in range(r):
+	    for j in range(c):
+	        axs[i, j].imshow(gen_imgs[cnt, 0], cmap="gray")
+	        axs[i, j].axis("off")
+	        cnt += 1
+	plt.show()
+
+	# Поиск ближайших изображений из обучающего набора к сгенерированным.
+	fig, axs = plt.subplots(r, c, figsize=(10, 6))
+	fig.suptitle("Ближайшие изображения из обучающего набора")
+
+	list_diffs = [0] * len(data)
+	for ind, k in tqdm(enumerate(data)):
+	    lst_cnt_diffs = [0] * (r * c)
+	    for cnt in range(r * c):
+	        lst_cnt_diffs[cnt] = compare_images(gen_imgs[cnt], k)
+	    list_diffs[ind] = lst_cnt_diffs
+
+	indx_more_sim_images = torch.argmin(torch.tensor(list_diffs).T, dim=1)
+	sims_images = [data_train[ind] for ind in indx_more_sim_images]
+
+	cnt = 0
+	for i in range(r):
+	    for j in range(c):
+	        c_diff = float("inf")
+	        c_img = None
+	    
+	        axs[i, j].imshow(sims_images[cnt][0], cmap="gray")
+	        axs[i, j].axis("off")
+	        cnt += 1
+
+	plt.show()
+
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -146,8 +221,10 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
     parser.add_argument('--batch_size', type=int, default=256, help='batch size')
     parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
-
+    parser.add_argument('--train', action="store_true", help='train or eval')
     args = parser.parse_args()
     _init_()
-    main(args)
-    show_reconstruction(args)
+    if args.train:
+    	main(args)
+    else:
+    	test(args)
