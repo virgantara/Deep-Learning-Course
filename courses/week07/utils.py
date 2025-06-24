@@ -14,7 +14,7 @@ def save_generated_images(epoch, generator, latent_dim, examples=10, device='cpu
     for i in range(examples):
         axes[i].imshow(generated_images[i].squeeze(), cmap='gray')
         axes[i].axis('off')
-    plt.savefig(f"{path_to_dir}/generated_images/generated_epoch_{epoch}.png")
+    plt.savefig(f"output/generated_images/generated_epoch_{epoch}.png")
     plt.close()
 
 def loss_d(device, real_pred, fake_pred):
