@@ -10,7 +10,7 @@ import os
 from pathlib import Path
 from tqdm import tqdm
 from PIL import Image
-
+from utils import loss_d, loss_g, save_generated_images
 import random
 
 from dataset import DatasetImages
