@@ -211,7 +211,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--exp_name', type=str, default='exp', metavar='N',
                         help='Name of the experiment')
-    parser.add_argument('--model_path', type=str, default='output/weights/_dcgan', metavar='N',
+    parser.add_argument('--model_path', type=str, default='output/weights_dcgan', metavar='N',
                         help='path of model')
     parser.add_argument('--lr_d', type=float, default=0.0002, metavar='LR',
                         help='learning rate (default: 0.001, 0.1 if using sgd)')
