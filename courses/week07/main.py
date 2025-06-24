@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, Dataset
 from torchvision.transforms import transforms
 import os
 from pathlib import Path
-
+from tqdm import tqdm
 from PIL import Image
 
 import random
