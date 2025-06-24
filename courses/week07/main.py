@@ -146,7 +146,7 @@ def test(args):
 
 	batch_size = args.batch_size 
 	embedding_dim = args.embedding_dim 
-
+	coeff_train = 1.0 
 
 	transform = transforms.Compose([
 	    transforms.Grayscale(), # 
@@ -223,10 +223,10 @@ if __name__ == '__main__':
     parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
     parser.add_argument('--batch_size', type=int, default=256, help='batch size')
     parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
-    parser.add_argument('--train', action="store_true", help='train or eval')
+    parser.add_argument('--eval', action="store_true", help='train or eval')
     args = parser.parse_args()
     _init_()
-    if args.train:
+    if not args.eval:
     	main(args)
     else:
     	test(args)
