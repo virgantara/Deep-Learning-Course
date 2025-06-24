@@ -148,5 +148,6 @@ if __name__ == '__main__':
     parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
 
     args = parser.parse_args()
+    _init_()
     main(args)
     show_reconstruction(args)
