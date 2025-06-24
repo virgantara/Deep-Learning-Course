@@ -93,7 +93,7 @@ def main(args):
 	                real_preds = discriminator(real_images)
 	                fake_preds = discriminator(generated_images)
 
-	                loss_discriminator = loss_d(real_preds, fake_preds)
+	                loss_discriminator = loss_d(device, real_preds, fake_preds)
 	                loss_discriminator.backward()
 	                optimizer_d.step()
 
@@ -103,7 +103,7 @@ def main(args):
 	            
 	            fake_preds = discriminator(generated_images)
 
-	            loss_generator = loss_g(fake_preds)
+	            loss_generator = loss_g(device, fake_preds)
 
 	            loss_generator.backward()
 	            optimizer_g.step()

@@ -17,7 +17,7 @@ def save_generated_images(epoch, generator, latent_dim, examples=10, device='cpu
     plt.savefig(f"{path_to_dir}/generated_images/generated_epoch_{epoch}.png")
     plt.close()
 
-def loss_d(real_pred, fake_pred):
+def loss_d(device, real_pred, fake_pred):
         
     real_labels = torch.ones_like(real_pred)
     fake_labels = torch.zeros_like(fake_pred)
@@ -30,5 +30,5 @@ def loss_d(real_pred, fake_pred):
 
     return (loss_real_labels + loss_fake_labels)
 
-def loss_g(fake_pred):
+def loss_g(device, fake_pred):
     return F.binary_cross_entropy(fake_pred, torch.ones_like(fake_pred).to(device))
