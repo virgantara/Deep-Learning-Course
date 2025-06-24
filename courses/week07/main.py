@@ -12,7 +12,7 @@ from tqdm import tqdm
 from PIL import Image
 from utils import loss_d, loss_g, save_generated_images
 import random
-
+import matplotlib.pyplot as plt
 from dataset import DatasetImages
 from models import Discriminator, Generator
 
