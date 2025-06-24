@@ -171,7 +171,7 @@ def test(args):
 	    gen_imgs = model(noise).cpu()
 
 	fig, axs = plt.subplots(r, c, figsize=(10, 6))
-	fig.suptitle("Сгенерированные изображения")
+	fig.suptitle("Gambar yang Dihasilkan")
 	cnt = 0
 	for i in range(r):
 	    for j in range(c):
@@ -180,9 +180,9 @@ def test(args):
 	        cnt += 1
 	plt.show()
 
-	# Поиск ближайших изображений из обучающего набора к сгенерированным.
+
 	fig, axs = plt.subplots(r, c, figsize=(10, 6))
-	fig.suptitle("Ближайшие изображения из обучающего набора")
+	fig.suptitle("Gambar Terdekat dari Dataset Pelatihan")
 
 	list_diffs = [0] * len(data)
 	for ind, k in tqdm(enumerate(data)):
