@@ -135,6 +135,7 @@ def compare_images(img1, img2):
     return torch.mean(torch.abs(img1 - img2)).item()
 
 def test(args):
+	print("Evaluating...")
 	model = Generator(args.embedding_dim)
 
 	model.load_state_dict(torch.load(args.model_path, map_location=torch.device('cpu')))  
