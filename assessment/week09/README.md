@@ -56,7 +56,7 @@ Gunakan dataset ini untuk melatih model SimCLR pada dataset Tiny ImageNet di [si
 **Nama Tugas:** Modifikasi dan Analisis SimCLR pada Tiny ImageNet  
 **Platform:** Kaggle Notebook  
 **Jenis Tugas:** Implementasi Mandiri dan Analisis  
-**Deadline:** [Tanggal dan Jam]
+**Deadline:** 01 Agustus 2025 pukul 23:59 WIB
 
 ## Tujuan Pembelajaran
 
@@ -65,7 +65,7 @@ Mahasiswa mampu memahami dan memodifikasi arsitektur SimCLR berbasis kode nyata,
 ## Materi Awal
 
 Notebook yang digunakan:  
-**SimCLR Tiny ImageNet**  
+[**SimCLR Tiny ImageNet**](https://www.kaggle.com/code/oddyvirgantara/simclr-tiny-imagenet)
 Silakan salin (duplicate/fork) notebook dari dosen ke akun Kaggle Anda untuk dimodifikasi.
 
 ## Instruksi Tugas
@@ -95,7 +95,8 @@ Silakan salin (duplicate/fork) notebook dari dosen ke akun Kaggle Anda untuk dim
    - Refleksi pribadi
 
 ## Pengumpulan
-
+- Unduk template laporan di [sini](https://www.ieee.org/conferences/publishing/templates)
+- Pilih yang versi word A4
 - File notebook `.ipynb` dengan nama `SimCLR_Modified_Nama.ipynb`
 - File laporan `.pdf` sesuai format IEEE Conference
 - Pastikan semua modifikasi dan komentar telah disimpan sebelum dikumpulkan.
