@@ -31,7 +31,7 @@
 1. [Week 6 - Eksplorasi Autoencoder](assessment/week06)
 1. [Week 7 - Implementasi Generative Adversarial Network (GAN)](assessment/week07)
 1. [Week 8 - Proyek Mini](assessment/week08)
-1. [Week 9](assessment/week09)
+1. [Week 9 - Self-Supervised Learning](assessment/week09)
 1. [Week 10](assessment/week10)
 1. [Week 11](assessment/week11)
 1. [Week 12](assessment/week12)
