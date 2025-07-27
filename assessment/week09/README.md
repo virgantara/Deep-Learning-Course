@@ -117,7 +117,6 @@ Silakan salin (duplicate/fork) notebook dari dosen ke akun Kaggle Anda untuk dim
 
 # Pengumpulan Tugas
 1. Tugas dikumpulkan di LMS El-Qalam
-2. Format file pdf
-3. Meskipun tugas kelompok, setiap individu wajib submit tugasnya
-4. Penamaan file nim_nama.pdf 
-5. Ubah nama file spasi dengan underscore `(_)`
+1. Format file pdf
+1. Penamaan file nim_nama.pdf 
+1. Ubah nama file spasi dengan underscore `(_)`
