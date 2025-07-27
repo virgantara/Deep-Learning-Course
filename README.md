@@ -23,14 +23,14 @@
 
 # Assessment:
 
-1. [Week 1](assessment/week01)
-1. [Week 2](assessment/week02)
-1. [Week 3](assessment/week03)
-1. [Week 4](assessment/week04)
-1. [Week 5](assessment/week05)
-1. [Week 6](assessment/week06)
-1. [Week 7](assessment/week07)
-1. [Week 8](assessment/week08)
+1. [Week 1 - Diskusi Kelompok untuk Pertemuan 1: Pengenalan Deep Learning dan Neural Network](assessment/week01)
+1. [Week 2 - Klasifikasi Bunga Iris dengan Multilayer Perceptron (MLP)](assessment/week02)
+1. [Week 3 - Klasifikasi Angka MNIST dengan CNN](assessment/week03)
+1. [Week 4 - Klasifikasi Dua Jenis Objek dengan Transfer Learning](assessment/week04)
+1. [Week 5 - Klasifikasi Teks](assessment/week05)
+1. [Week 6 - Eksplorasi Autoencoder](assessment/week06)
+1. [Week 7 - Implementasi Generative Adversarial Network (GAN)](assessment/week07)
+1. [Week 8 - Proyek Mini](assessment/week08)
 1. [Week 9](assessment/week09)
 1. [Week 10](assessment/week10)
 1. [Week 11](assessment/week11)
