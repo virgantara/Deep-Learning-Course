@@ -1,4 +1,4 @@
-# Tugas [D09] Ringkasan Diskusi Kelompok: Konsep dan Prinsip Contrastive Learning
+# Tugas [T13] Ringkasan Diskusi Kelompok: Konsep dan Prinsip Contrastive Learning
 
 **Nama Kelompok:** [Nama Kelompok]  
 **Anggota:**  
