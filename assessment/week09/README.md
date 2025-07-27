@@ -5,7 +5,7 @@
 1. Nama Lengkap 1 (NIM)  
 2. Nama Lengkap 2 (NIM)  
 3. ...  
-**Tanggal Diskusi:** [Tanggal Pelaksanaan]
+**Deadline pengumpulan ringkasan:** 02 Agustus 2025 pukul 23:59 WIB
 
 ## 1. Pengertian Contrastive Learning
 Tuliskan pengertian contrastive learning secara ringkas namun komprehensif.
