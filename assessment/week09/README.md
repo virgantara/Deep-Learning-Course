@@ -112,3 +112,12 @@ Silakan salin (duplicate/fork) notebook dari dosen ke akun Kaggle Anda untuk dim
 | **Analisis Hasil**        | Tidak ada hasil                                    | 0         | Hanya menampilkan loss/hasil mentah                          | 33        | Terdapat grafik dan penjelasan hasil                            | 66        | Analisis mendalam + visualisasi representasi (t-SNE/PCA)          | 100       |
 | **Refleksi dan Insight**  | Tidak ada refleksi                                 | 0         | Refleksi umum dan deskriptif saja                            | 33        | Refleksi jujur dan menyeluruh namun kurang mendalam             | 66        | Refleksi kritis, membahas tantangan dan strategi perbaikan ke depan | 100       |
 | **Laporan IEEE**          | Format tidak sesuai / asal-asalan                  | 0         | Format IEEE tidak konsisten atau kurang lengkap              | 33        | Format cukup rapi, sesuai, namun visualisasi biasa              | 66        | Format IEEE rapi, visual menarik, penulisan ilmiah terstruktur    | 100       |
+
+
+
+# Pengumpulan Tugas
+1. Tugas dikumpulkan di LMS El-Qalam
+2. Format file pdf
+3. Meskipun tugas kelompok, setiap individu wajib submit tugasnya
+4. Penamaan file nim_nama.pdf 
+5. Ubah nama file spasi dengan underscore `(_)`
