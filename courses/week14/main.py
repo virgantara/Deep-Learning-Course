@@ -306,11 +306,12 @@ with torch.no_grad():
             pred_txt = decode_ids(ys[:, b], id_itos, src[:, b], en_itos)
             pred_txt_ids = ys[:, b]
             unk_pos = (pred_txt_ids == UNK).nonzero(as_tuple=True)[0]
-            print("UNK predicted at positions:", unk_pos.tolist())
+            
             print("-" * 60)
             print("SRC :", src_txt)
             print("TRG :", trg_txt)
             print("PRED:", pred_txt)
+            print("UNK predicted at positions:", unk_pos.tolist())
         shown += B
         if shown >= n_show:
             break
