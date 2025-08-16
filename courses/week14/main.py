@@ -86,8 +86,8 @@ train_pairs, val_pairs, test_pairs = split_pairs(pairs, 0.8, 0.1)
 print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pairs):,}")
 
 # 4) Build separate vocabs (you can also build joint if you prefer)
-en_vocab, en_itos = build_vocab([src for src, _ in train_pairs])
-id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs])
+en_vocab, en_itos = build_vocab([src for src, _ in train_pairs], max_size=10000)
+id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs], max_size=10000)
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
 
 train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)
@@ -168,16 +168,23 @@ def epoch_run(model, loader, train=True, teacher_forcing=0.5):
     ppl = math.exp(avg_loss) if avg_loss < 20 else float("inf")
     return avg_loss, ppl
 
-def decode_ids(ids, itos):
-    # ids: [T]
-    toks = []
-    for i in ids:
-        if i.item() == EOS:
+def decode_ids(ids, itos, src=None, src_itos=None):
+    tokens = []
+    for i, tok_id in enumerate(ids):
+        tok = tok_id.item()
+        if tok == EOS:
             break
-        if i.item() in (BOS, PAD):
+        if tok == PAD or tok == BOS:
             continue
-        toks.append(itos.get(i.item(), "<unk>"))
-    return " ".join(toks)
+        if tok == UNK and src is not None and src_itos is not None:
+            # try to copy aligned source token
+            if i < len(src):
+                tokens.append(src_itos.get(src[i].item(), "<src-unk>"))
+            else:
+                tokens.append("<unk>")
+        else:
+            tokens.append(itos.get(tok, "<unk>"))
+    return " ".join(tokens)
 
 def plot_curves(history, save_prefix="bahdanau", fontsize=14):
     epochs = range(1, len(history["train_loss"]) + 1)
@@ -251,7 +258,7 @@ with open("train_history.csv", "w", newline="") as f:
         w.writerow([i+1, history["train_loss"][i], history["val_loss"][i],
                     history["train_ppl"][i], history["val_ppl"][i]])
 
-plot_curves(history, save_prefix="bahdanau", fontsize=14)
+# plot_curves(history, save_prefix="bahdanau", fontsize=14)
 # -----------------------
 # Test + Sample decode
 # -----------------------
@@ -270,9 +277,9 @@ with torch.no_grad():
         ys, _atts = seq2seq.greedy_decode(src, max_len=40)  # [Tout, B]
         B = src.size(1)
         for b in range(min(B, n_show - shown)):
-            src_txt = decode_ids(src[:, b], en_itos)
-            trg_txt = decode_ids(trg[:, b], id_itos)
-            pred_txt = decode_ids(ys[:, b], id_itos)
+            src_txt  = decode_ids(src[:, b], en_itos)
+            trg_txt  = decode_ids(trg[:, b], id_itos)
+            pred_txt = decode_ids(ys[:, b], id_itos, src[:, b], en_itos)
             print("-" * 60)
             print("SRC :", src_txt)
             print("TRG :", trg_txt)
