@@ -83,8 +83,8 @@ train_pairs, val_pairs, test_pairs = split_pairs(pairs, 0.8, 0.1)
 print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pairs):,}")
 
 # 4) Build separate vocabs (you can also build joint if you prefer)
-en_vocab, en_itos = build_vocab([src for src, _ in train])
-id_vocab, id_itos = build_vocab([tgt for _, tgt in train])
+en_vocab, en_itos = build_vocab([src for src, _ in train_pairs])
+id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs])
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
 
 train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)
