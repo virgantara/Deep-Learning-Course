@@ -3,6 +3,7 @@ from collections import Counter
 from pathlib import Path
 from util import *
 import torch
+import torch.nn as nn
 
 from encoder import BahdanauEncoder
 from decoder import BahdanauDecoder
