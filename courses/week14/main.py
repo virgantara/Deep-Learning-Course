@@ -286,7 +286,7 @@ with open("train_history.csv", "w", newline="") as f:
 # -----------------------
 # Test + Sample decode
 # -----------------------
-seq2seq.load_state_dict(torch.load("bahdanau_best.pt", map_location=device))
+seq2seq.load_state_dict(torch.load("bahdanau_best.pt", weights_only=True, map_location=device))
 test_loss, test_ppl = epoch_run(seq2seq, test_loader, train=False, teacher_forcing=0.0)
 print(f"TEST  | Loss {test_loss:.4f} | PPL {test_ppl:.2f}")
 
