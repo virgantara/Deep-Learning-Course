@@ -98,7 +98,7 @@ test_loader  = DataLoader(test_ds,  batch_size=BATCH_SIZE, shuffle=False, collat
 
 
 ENCODER_HIDDEN_SIZE = 512
-DECODER_HIDDEN_SIZE = 2 * ENCODER_HIDDEN_SIZE
+DECODER_HIDDEN_SIZE = 256
 
 ENCODER_EMBEDDING_DIM, DECODER_HIDDEN_SIZE  = 256, 256
 
@@ -108,7 +108,11 @@ encoder = BahdanauEncoder(input_dim=len(en_vocab),
 						decoder_hidden_dim = DECODER_HIDDEN_SIZE,
 						dropout_p = 0.15)
 
-attn = BahdanauAttentionQKV(DECODER_HIDDEN_SIZE)
+attn = BahdanauAttentionQKV(
+            hidden_size=DECODER_HIDDEN_SIZE,
+            query_size=DECODER_HIDDEN_SIZE,
+            key_size= 2 * ENCODER_HIDDEN_SIZE,
+            dropout_p = 0.0)
 
 decoder = BahdanauDecoder(output_dim=len(id_vocab), 
 						embedding_dim=DECODER_HIDDEN_SIZE,

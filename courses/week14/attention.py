@@ -22,12 +22,14 @@ class BahdanauAttentionQKV(nn.Module):
 
 		key_out = self.key_layer(encoder_outputs)
 
-		energy_input = torch.tanh(query_ot + key_out)
+		query_exp = query_out.unsqueeze(0) 
+		energy_input = torch.tanh(query_exp + key_out)
 		energies = self.energy_layer(energy_input).squeeze(2)
 
 		if src_mask is not None:
 			energies.data.masked_fill_(src_mask == 0, float("-inf"))
 
 		weights = F.softmax(energies, dim=0)
+		weights = self.dropout(weights)
 
 		return weights.transpose(0,1)
