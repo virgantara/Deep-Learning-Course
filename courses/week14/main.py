@@ -7,6 +7,8 @@ import torch.nn as nn
 from tqdm import tqdm
 from torch.utils.data import Dataset, DataLoader
 import math
+import matplotlib.pyplot as plt
+import csv
 
 from util import *
 from encoder import BahdanauEncoder
@@ -129,6 +131,8 @@ criterion = nn.CrossEntropyLoss(ignore_index=PAD)
 optimizer = torch.optim.Adam(seq2seq.parameters(), lr=3e-4)
 CLIP = 1.0
 
+
+
 def epoch_run(model, loader, train=True, teacher_forcing=0.5):
     if train:
         model.train()
@@ -175,9 +179,49 @@ def decode_ids(ids, itos):
         toks.append(itos.get(i.item(), "<unk>"))
     return " ".join(toks)
 
+def plot_curves(history, save_prefix="bahdanau", fontsize=14):
+    epochs = range(1, len(history["train_loss"]) + 1)
+
+    # Loss
+    plt.figure(figsize=(8, 5))
+    plt.plot(epochs, history["train_loss"], marker="o", label="Train")
+    plt.plot(epochs, history["val_loss"],   marker="o", label="Val")
+    plt.title("Cross-Entropy Loss per Epoch", fontsize=fontsize+2)
+    plt.xlabel("Epoch", fontsize=fontsize)
+    plt.ylabel("Loss", fontsize=fontsize)
+    plt.xticks(fontsize=fontsize)
+    plt.yticks(fontsize=fontsize)
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=fontsize)
+    plt.tight_layout()
+    plt.savefig(f"{save_prefix}_loss.png", dpi=180)
+    plt.show()
+
+    # Perplexity
+    plt.figure(figsize=(8, 5))
+    plt.plot(epochs, history["train_ppl"], marker="o", label="Train")
+    plt.plot(epochs, history["val_ppl"],   marker="o", label="Val")
+    plt.title("Perplexity (PPL) per Epoch", fontsize=fontsize+2)
+    plt.xlabel("Epoch", fontsize=fontsize)
+    plt.ylabel("PPL", fontsize=fontsize)
+    plt.xticks(fontsize=fontsize)
+    plt.yticks(fontsize=fontsize)
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=fontsize)
+    plt.tight_layout()
+    plt.savefig(f"{save_prefix}_ppl.png", dpi=180)
+    plt.show()
+
 # -----------------------
 # Train loop
 # -----------------------
+
+
+history = {
+    "train_loss": [], "val_loss": [],
+    "train_ppl":  [], "val_ppl":  []
+}
+
 EPOCHS = 10
 best_val = float("inf")
 for epoch in range(1, EPOCHS + 1):
@@ -185,6 +229,11 @@ for epoch in range(1, EPOCHS + 1):
     tf = max(0.3, 0.7 - 0.04 * (epoch - 1))
     train_loss, train_ppl = epoch_run(seq2seq, train_loader, train=True,  teacher_forcing=tf)
     val_loss,   val_ppl   = epoch_run(seq2seq, val_loader,   train=False, teacher_forcing=0.0)
+
+    history["train_loss"].append(train_loss)
+    history["val_loss"].append(val_loss)
+    history["train_ppl"].append(train_ppl)
+    history["val_ppl"].append(val_ppl)
 
     print(f"Epoch {epoch:02d} | TF={tf:.2f} | "
           f"Train Loss {train_loss:.4f} PPL {train_ppl:.2f} | "
@@ -195,6 +244,14 @@ for epoch in range(1, EPOCHS + 1):
         torch.save(seq2seq.state_dict(), "bahdanau_best.pt")
         print("  -> saved best to bahdanau_best.pt")
 
+with open("train_history.csv", "w", newline="") as f:
+    w = csv.writer(f)
+    w.writerow(["epoch","train_loss","val_loss","train_ppl","val_ppl"])
+    for i in range(EPOCHS):
+        w.writerow([i+1, history["train_loss"][i], history["val_loss"][i],
+                    history["train_ppl"][i], history["val_ppl"][i]])
+
+plot_curves(history, save_prefix="bahdanau", fontsize=14)
 # -----------------------
 # Test + Sample decode
 # -----------------------
