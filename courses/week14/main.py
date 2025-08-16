@@ -1,6 +1,7 @@
 import unicodedata
 from collections import Counter
 from pathlib import Path
+import argparse
 
 import torch
 import torch.nn as nn
@@ -16,7 +17,15 @@ from decoder import BahdanauDecoder
 from attention import BahdanauAttentionQKV
 from seq2seq import BahdanauSeq2Seq
 
-
+parser = argparse.ArgumentParser()
+parser.add_argument('--train_dir', type=str, default='data/catndog/train', help='Path to training data')
+parser.add_argument('--test_dir', type=str, default='data/catndog/test', help='Path to test data')
+parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs')
+parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
+parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
+parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
+parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
+args = parser.parse_args()
 
 
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
@@ -244,7 +253,7 @@ history = {
     "train_ppl":  [], "val_ppl":  []
 }
 
-EPOCHS = 2
+EPOCHS = args.epochs
 best_val = float("inf")
 for epoch in range(1, EPOCHS + 1):
     # optionally decay teacher forcing a bit
