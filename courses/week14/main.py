@@ -4,6 +4,7 @@ from pathlib import Path
 from util import *
 import torch
 import torch.nn as nn
+from tqdm import tqdm
 
 from encoder import BahdanauEncoder
 from decoder import BahdanauDecoder
@@ -80,7 +81,7 @@ def epoch_run(model, loader, train=True, teacher_forcing=0.5):
 
     total_loss, total_tokens = 0.0, 0
     with torch.set_grad_enabled(train):
-        for src, trg in loader:
+        for src, trg in tqdm(loader):
             src = src.to(device)  # [Tsrc, B]
             trg = trg.to(device)  # [Ttrg, B]
 
