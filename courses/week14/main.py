@@ -244,7 +244,7 @@ history = {
     "train_ppl":  [], "val_ppl":  []
 }
 
-EPOCHS = 10
+EPOCHS = 2
 best_val = float("inf")
 for epoch in range(1, EPOCHS + 1):
     # optionally decay teacher forcing a bit
