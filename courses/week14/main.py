@@ -1,11 +1,13 @@
 import unicodedata
 from collections import Counter
 from pathlib import Path
-from util import *
+
 import torch
 import torch.nn as nn
 from tqdm import tqdm
+from torch.utils.data import Dataset, DataLoader
 
+from util import *
 from encoder import BahdanauEncoder
 from decoder import BahdanauDecoder
 from attention import BahdanauAttentionQKV
@@ -30,6 +32,44 @@ def build_vocab(token_lists, min_freq=1, max_size=None):
     itos = {i: w for w, i in vocab.items()}
     return vocab, itos
 
+class NMTDataset(Dataset):
+    def __init__(self, pairs, src_vocab, trg_vocab):
+        self.src_vocab = src_vocab
+        self.trg_vocab = trg_vocab
+        self.data = [(to_ids(src, src_vocab), to_ids(trg, trg_vocab)) for src, trg in pairs]
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        src_ids, trg_ids = self.data[idx]
+        return torch.tensor(src_ids, dtype=torch.long), torch.tensor(trg_ids, dtype=torch.long)
+
+def collate_batch(batch):
+    """
+    batch: list of (src_ids[T1], trg_ids[T2]).
+    Returns:
+      src_pad: [Tsrc, B]
+      trg_pad: [Ttrg, B]
+      src_lens, trg_lens (optional if you need)
+    """
+    src_seqs, trg_seqs = zip(*batch)
+    src_lens = [len(s) for s in src_seqs]
+    trg_lens = [len(t) for t in trg_seqs]
+
+    max_src = max(src_lens)
+    max_trg = max(trg_lens)
+
+    padded_src = torch.full((len(batch), max_src), PAD, dtype=torch.long)
+    padded_trg = torch.full((len(batch), max_trg), PAD, dtype=torch.long)
+
+    for i, (s, t) in enumerate(zip(src_seqs, trg_seqs)):
+        padded_src[i, : len(s)] = s
+        padded_trg[i, : len(t)] = t
+
+    # transpose to [T, B] for your encoder/decoder
+    return padded_src.t().contiguous(), padded_trg.t().contiguous()
+
 data_file = Path("data/ind-eng/ind.txt")
 
 # 1) Load + preprocess + filter (e.g., <= 20 tokens)
@@ -45,6 +85,16 @@ print(f"Train: {len(train):,}, Val: {len(val):,}, Test: {len(test):,}")
 en_vocab, en_itos = build_vocab([src for src, _ in train])
 id_vocab, id_itos = build_vocab([tgt for _, tgt in train])
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
+
+train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)
+val_ds   = NMTDataset(val_pairs,   en_vocab, id_vocab)
+test_ds  = NMTDataset(test_pairs,  en_vocab, id_vocab)
+
+BATCH_SIZE = 64
+train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_batch)
+val_loader   = DataLoader(val_ds,   batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
+test_loader  = DataLoader(test_ds,  batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
+
 
 ENCODER_HIDDEN_SIZE = 512
 DECODER_HIDDEN_SIZE = 2 * ENCODER_HIDDEN_SIZE
