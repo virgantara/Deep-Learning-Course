@@ -45,8 +45,15 @@ def normalize_and_tokenize(s: str):
 	_token_re = re.compile(r"\w+|[^\w\s]", flags=re.UNICODE)
 	return _token_re.findall(s)
 
-def to_ids(tokens, vocab):
-    return [BOS] + [vocab.get(t, UNK) for t in tokens] + [EOS]
+def to_ids(tokens, vocab, unk_log=None):
+    ids = [BOS]
+    for tok in tokens:
+        tok_id = vocab.get(tok, UNK)
+        if tok_id == UNK and unk_log is not None:
+            unk_log.append(tok)
+        ids.append(tok_id)
+    ids.append(EOS)
+    return ids
 
 def pad_batch(batch, pad_id=PAD):
     max_len = max(len(x) for x in batch)

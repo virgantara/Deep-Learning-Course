@@ -94,6 +94,21 @@ train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)
 val_ds   = NMTDataset(val_pairs,   en_vocab, id_vocab)
 test_ds  = NMTDataset(test_pairs,  en_vocab, id_vocab)
 
+en_unk_tokens = []
+id_unk_tokens = []
+
+train_ds.data = [(to_ids(src, en_vocab, en_unk_tokens), 
+                  to_ids(trg, id_vocab, id_unk_tokens)) for src, trg in train_pairs]
+
+
+print("\nTop unknown EN tokens:")
+for tok, c in Counter(en_unk_tokens).most_common(20):
+    print(f"  {tok:15}  {c}x")
+
+print("\nTop unknown ID tokens:")
+for tok, c in Counter(id_unk_tokens).most_common(20):
+    print(f"  {tok:15}  {c}x")
+
 BATCH_SIZE = 64
 train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_batch)
 val_loader   = DataLoader(val_ds,   batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
@@ -280,6 +295,9 @@ with torch.no_grad():
             src_txt  = decode_ids(src[:, b], en_itos)
             trg_txt  = decode_ids(trg[:, b], id_itos)
             pred_txt = decode_ids(ys[:, b], id_itos, src[:, b], en_itos)
+            pred_txt_ids = ys[:, b]
+            unk_pos = (pred_txt_ids == UNK).nonzero(as_tuple=True)[0]
+            print("UNK predicted at positions:", unk_pos.tolist())
             print("-" * 60)
             print("SRC :", src_txt)
             print("TRG :", trg_txt)
