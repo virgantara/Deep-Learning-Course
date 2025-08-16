@@ -1,5 +1,11 @@
 import unicodedata
 import re
+import numpy as np
+import random
+
+
+SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
+PAD, BOS, EOS, UNK = range(4)
 
 def load_pairs(path, max_len=20, max_pairs=None):
 	pairs = []
@@ -38,3 +44,20 @@ def normalize_and_tokenize(s: str):
 	s = re.sub(r"\s+"," ",s)
 	_token_re = re.compile(r"\w+|[^\w\s]", flags=re.UNICODE)
 	return _token_re.findall(s)
+
+def to_ids(tokens, vocab):
+    return [BOS] + [vocab.get(t, UNK) for t in tokens] + [EOS]
+
+def pad_batch(batch, pad_id=PAD):
+    max_len = max(len(x) for x in batch)
+    return [seq + [pad_id] * (max_len - len(seq)) for seq in batch]
+
+def split_pairs(pairs, train_ratio=0.8, val_ratio=0.1):
+    random.shuffle(pairs)
+    n = len(pairs)
+    n_train = int(n * train_ratio)
+    n_val = int(n * val_ratio)
+    train = pairs[:n_train]
+    val = pairs[n_train : n_train + n_val]
+    test = pairs[n_train + n_val :]
+    return train, val, test
