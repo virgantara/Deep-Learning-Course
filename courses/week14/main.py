@@ -78,8 +78,9 @@ print(f"Total usable pairs after filtering: {len(pairs):,}")
 
 
 # 3) Split 80/10/10
-train, val, test = split_pairs(pairs, 0.8, 0.1)
-print(f"Train: {len(train):,}, Val: {len(val):,}, Test: {len(test):,}")
+
+train_pairs, val_pairs, test_pairs = split_pairs(pairs, 0.8, 0.1)
+print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pairs):,}")
 
 # 4) Build separate vocabs (you can also build joint if you prefer)
 en_vocab, en_itos = build_vocab([src for src, _ in train])
