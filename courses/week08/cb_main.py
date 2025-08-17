@@ -76,7 +76,10 @@ transform = transforms.Compose([
 dataset = RotationDataset("./data/animals", transform=transform)
 dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 model = RotationCNN()
+model = model.to(device)
 criterion = nn.CrossEntropyLoss()  # corresponds to Eq (3)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
@@ -84,6 +87,7 @@ optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 for epoch in range(5):
     total_loss = 0
     for images, labels in tqdm(dataloader):
+        images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         loss = criterion(outputs, labels)  # this corresponds to ℒ(Xi, θ)
 
