@@ -1,0 +1,4 @@
+gdown
+torch
+numpy
+matplotlib
