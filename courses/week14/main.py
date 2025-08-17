@@ -2,6 +2,7 @@ import unicodedata
 from collections import Counter
 from pathlib import Path
 import argparse
+from nltk.translate.bleu_score import corpus_bleu
 
 import torch
 import torch.nn as nn
@@ -192,7 +193,7 @@ def epoch_run(model, loader, train=True, teacher_forcing=0.5):
     ppl = math.exp(avg_loss) if avg_loss < 20 else float("inf")
     return avg_loss, ppl
 
-def decode_ids(ids, itos, src=None, src_itos=None):
+def decode_ids(ids, itos, src=None, src_itos=None, return_tokens=False):
     tokens = []
     for i, tok_id in enumerate(ids):
         tok = tok_id.item()
@@ -201,14 +202,13 @@ def decode_ids(ids, itos, src=None, src_itos=None):
         if tok == PAD or tok == BOS:
             continue
         if tok == UNK and src is not None and src_itos is not None:
-            # try to copy aligned source token
             if i < len(src):
                 tokens.append(src_itos.get(src[i].item(), "<src-unk>"))
             else:
                 tokens.append("<unk>")
         else:
             tokens.append(itos.get(tok, "<unk>"))
-    return " ".join(tokens)
+    return tokens if return_tokens else " ".join(tokens)
 
 def plot_curves(history, save_prefix="bahdanau", fontsize=14):
     epochs = range(1, len(history["train_loss"]) + 1)
@@ -273,7 +273,7 @@ for epoch in range(1, EPOCHS + 1):
     if val_loss < best_val:
         best_val = val_loss
         torch.save(seq2seq.state_dict(), "bahdanau_best.pt")
-        print("  -> saved best to bahdanau_best.pt")
+        print("Saving best to bahdanau_best.pt")
 
 with open("train_history.csv", "w", newline="") as f:
     w = csv.writer(f)
@@ -283,12 +283,13 @@ with open("train_history.csv", "w", newline="") as f:
                     history["train_ppl"][i], history["val_ppl"][i]])
 
 # plot_curves(history, save_prefix="bahdanau", fontsize=14)
-# -----------------------
-# Test + Sample decode
-# -----------------------
+
 seq2seq.load_state_dict(torch.load("bahdanau_best.pt", weights_only=True, map_location=device))
 test_loss, test_ppl = epoch_run(seq2seq, test_loader, train=False, teacher_forcing=0.0)
 print(f"TEST  | Loss {test_loss:.4f} | PPL {test_ppl:.2f}")
+
+references = []
+hypotheses = []
 
 # Show a few greedy decodes
 seq2seq.eval()
@@ -306,12 +307,28 @@ with torch.no_grad():
             pred_txt = decode_ids(ys[:, b], id_itos, src[:, b], en_itos)
             pred_txt_ids = ys[:, b]
             unk_pos = (pred_txt_ids == UNK).nonzero(as_tuple=True)[0]
-            
-            print("-" * 60)
-            print("SRC :", src_txt)
-            print("TRG :", trg_txt)
-            print("PRED:", pred_txt)
-            print("UNK predicted at positions:", unk_pos.tolist())
-        shown += B
+
+            ref = decode_ids(trg[:, b], id_itos, return_tokens=True)
+            hyp = decode_ids(ys[:, b], id_itos, src[:, b], en_itos, return_tokens=True)
+
+            # Remove special tokens
+            ref = [w for w in ref if w not in {'<pad>', '<bos>', '<eos>'}]
+            hyp = [w for w in hyp if w not in {'<pad>', '<bos>', '<eos>'}]
+
+            references.append(ref)
+            hypotheses.append(hyp)
+                
+            if shown < n_show:
+                pred_txt_ids = ys[:, b]
+                unk_pos = (pred_txt_ids == UNK).nonzero(as_tuple=True)[0]
+                print("-" * 60)
+                print("SRC :", src_txt)
+                print("TRG :", trg_txt)
+                print("PRED:", pred_txt)
+                print("UNK predicted at positions:", unk_pos.tolist())
+                shown += 1
         if shown >= n_show:
             break
+
+bleu = corpus_bleu(references, hypotheses) * 100
+print(f"BLEU score: {bleu:.2f}")
