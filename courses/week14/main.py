@@ -27,6 +27,7 @@ parser.add_argument('--tf', type=float, default=0.5, help='Teacher Forcing')
 parser.add_argument('--dropout', type=float, default=0.15, help='dropout')
 parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
 parser.add_argument('--max_vocab', type=int, default=None)
+parser.add_argument('--target_lang', type=str, default='ID', help='Bahasa tujuan')
 parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
 args = parser.parse_args()
 
@@ -118,7 +119,7 @@ print("\nTop unknown ID tokens:")
 for tok, c in Counter(id_unk_tokens).most_common(20):
     print(f"  {tok:15}  {c}x")
 
-BATCH_SIZE = 64
+BATCH_SIZE = args.batch_size
 train_loader = DataLoader(train_ds, batch_size=BATCH_SIZE, shuffle=True, collate_fn=collate_batch)
 val_loader   = DataLoader(val_ds,   batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
 test_loader  = DataLoader(test_ds,  batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
