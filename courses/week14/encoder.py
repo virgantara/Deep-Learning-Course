@@ -26,6 +26,7 @@ class BahdanauEncoder(nn.Module):
 
 		outputs, hidden = self.gru(embedded)
 		x = torch.cat((hidden[-2, :, :], hidden[-1, :, :]), dim=1)
+		x = self.dropout(x)
 		x = self.linear(x)
 
 		hidden = torch.tanh(x)
