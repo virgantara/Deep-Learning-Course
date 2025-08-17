@@ -109,7 +109,7 @@ val_loader   = DataLoader(val_ds,   batch_size=BATCH_SIZE, shuffle=False, collat
 test_loader  = DataLoader(test_ds,  batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
 
 
-ENCODER_HIDDEN_SIZE = 256
+ENCODER_HIDDEN_SIZE = 512
 DECODER_HIDDEN_SIZE = 256
 
 ENCODER_EMBEDDING_DIM, DECODER_HIDDEN_SIZE  = 256, 256
