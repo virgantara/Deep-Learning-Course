@@ -155,6 +155,40 @@ optimizer = torch.optim.Adam(seq2seq.parameters(), lr=3e-4)
 CLIP = 1.0
 
 
+def epoch_run(model, loader, train=True, teacher_forcing=0.5):
+    if train:
+        model.train()
+    else:
+        model.eval()
+
+    total_loss, total_tokens = 0.0, 0
+    with torch.set_grad_enabled(train):
+        for src, trg in tqdm(loader):
+            src = src.to(device)  # [Tsrc, B]
+            trg = trg.to(device)  # [Ttrg, B]
+
+            # Forward: outputs = [Ttrg, B, V]
+            outputs, _att = model(src, trg, teacher_forcing_ratio=teacher_forcing if train else 0.0)
+
+            # Shift for CE: predict trg[1:] from inputs up to trg[:-1]
+            logits = outputs[1:].reshape(-1, outputs.size(-1))      # [(Ttrg-1)*B, V]
+            target = trg[1:].reshape(-1)                            # [(Ttrg-1)*B]
+
+            loss = criterion(logits, target)
+
+            if train:
+                optimizer.zero_grad(set_to_none=True)
+                loss.backward()
+                torch.nn.utils.clip_grad_norm_(model.parameters(), CLIP)
+                optimizer.step()
+
+            n_tokens = (target != PAD).sum().item()
+            total_loss += loss.item() * n_tokens
+            total_tokens += n_tokens
+
+    avg_loss = total_loss / max(1, total_tokens)
+    ppl = math.exp(avg_loss) if avg_loss < 20 else float("inf")
+    return avg_loss, ppl
 
 
 def decode_ids(ids, itos, src=None, src_itos=None, return_tokens=False):
