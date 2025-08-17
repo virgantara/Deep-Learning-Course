@@ -19,8 +19,7 @@ from attention import BahdanauAttentionQKV
 from seq2seq import BahdanauSeq2Seq
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--train_dir', type=str, default='data/catndog/train', help='Path to training data')
-parser.add_argument('--test_dir', type=str, default='data/catndog/test', help='Path to test data')
+parser.add_argument('--data_path', type=str, default='data/ind-eng/ind.txt', help='Path to txt data')
 parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs')
 parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
 parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
@@ -62,7 +61,7 @@ class NMTDataset(Dataset):
 
 
 
-data_file = Path("data/ind-eng/ind.txt")
+data_file = Path(args.data_path)
 
 # 1) Load + preprocess + filter (e.g., <= 20 tokens)
 pairs = load_pairs(data_file, max_len=20, max_pairs=None)
@@ -137,7 +136,7 @@ decoder = BahdanauDecoder(output_dim=len(id_vocab),
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 seq2seq = BahdanauSeq2Seq(encoder, decoder, device, pad_id=0, bos_id=1, eos_id=2).to(device)
 
-criterion = nn.CrossEntropyLoss(ignore_index=PAD, label_smoothing=0.1)
+criterion = nn.CrossEntropyLoss(ignore_index=PAD)
 optimizer = torch.optim.Adam(seq2seq.parameters(), lr=3e-4)
 CLIP = 1.0
 
