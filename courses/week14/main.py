@@ -89,8 +89,8 @@ train_pairs, val_pairs, test_pairs = split_pairs(pairs, 0.8, 0.1)
 print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pairs):,}")
 
 # 4) Build separate vocabs (you can also build joint if you prefer)
-en_vocab, en_itos = build_vocab([src for src, _ in train_pairs], max_size=10000)
-id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs], max_size=10000)
+en_vocab, en_itos = build_vocab([src for src, _ in train_pairs], max_size=args.max_vocab)
+id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs], max_size=args.max_vocab)
 
 with open("en_vocab.json", "w") as f:
     json.dump(en_vocab, f)
