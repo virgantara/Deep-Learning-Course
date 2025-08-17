@@ -137,7 +137,7 @@ decoder = BahdanauDecoder(output_dim=len(id_vocab),
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 seq2seq = BahdanauSeq2Seq(encoder, decoder, device, pad_id=0, bos_id=1, eos_id=2).to(device)
 
-criterion = nn.CrossEntropyLoss(ignore_index=PAD)
+criterion = nn.CrossEntropyLoss(ignore_index=PAD, label_smoothing=0.1)
 optimizer = torch.optim.Adam(seq2seq.parameters(), lr=3e-4)
 CLIP = 1.0
 
