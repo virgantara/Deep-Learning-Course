@@ -200,22 +200,6 @@ def epoch_run(model, loader, train=True, teacher_forcing=0.5):
     ppl = math.exp(avg_loss) if avg_loss < 20 else float("inf")
     return avg_loss, ppl
 
-def decode_ids(ids, itos, src=None, src_itos=None, return_tokens=False):
-    tokens = []
-    for i, tok_id in enumerate(ids):
-        tok = tok_id.item()
-        if tok == EOS:
-            break
-        if tok == PAD or tok == BOS:
-            continue
-        if tok == UNK and src is not None and src_itos is not None:
-            if i < len(src):
-                tokens.append(src_itos.get(src[i].item(), "<src-unk>"))
-            else:
-                tokens.append("<unk>")
-        else:
-            tokens.append(itos.get(tok, "<unk>"))
-    return tokens if return_tokens else " ".join(tokens)
 
 def plot_curves(history, save_prefix="bahdanau", fontsize=14):
     epochs = range(1, len(history["train_loss"]) + 1)

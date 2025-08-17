@@ -9,6 +9,23 @@ SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
 
 
+def decode_ids(ids, itos, src=None, src_itos=None, return_tokens=False):
+    tokens = []
+    for i, tok_id in enumerate(ids):
+        tok = tok_id.item()
+        if tok == EOS:
+            break
+        if tok == PAD or tok == BOS:
+            continue
+        if tok == UNK and src is not None and src_itos is not None:
+            if i < len(src):
+                tokens.append(src_itos.get(src[i].item(), "<src-unk>"))
+            else:
+                tokens.append("<unk>")
+        else:
+            tokens.append(itos.get(tok, "<unk>"))
+    return tokens if return_tokens else " ".join(tokens)
+
 def evaluate_bleu(model, loader, src_itos, trg_itos, src_vocab=None, max_len=40):
     """
     Menghitung BLEU score untuk data validasi/test.
