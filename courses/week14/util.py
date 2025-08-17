@@ -8,6 +8,30 @@ import torch
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
 
+def collate_batch(batch):
+    """
+    batch: list of (src_ids[T1], trg_ids[T2]).
+    Returns:
+      src_pad: [Tsrc, B]
+      trg_pad: [Ttrg, B]
+      src_lens, trg_lens (optional if you need)
+    """
+    src_seqs, trg_seqs = zip(*batch)
+    src_lens = [len(s) for s in src_seqs]
+    trg_lens = [len(t) for t in trg_seqs]
+
+    max_src = max(src_lens)
+    max_trg = max(trg_lens)
+
+    padded_src = torch.full((len(batch), max_src), PAD, dtype=torch.long)
+    padded_trg = torch.full((len(batch), max_trg), PAD, dtype=torch.long)
+
+    for i, (s, t) in enumerate(zip(src_seqs, trg_seqs)):
+        padded_src[i, : len(s)] = s
+        padded_trg[i, : len(t)] = t
+
+    # transpose to [T, B] for your encoder/decoder
+    return padded_src.t().contiguous(), padded_trg.t().contiguous()
 
 def decode_ids(ids, itos, src=None, src_itos=None, return_tokens=False):
     tokens = []

@@ -59,30 +59,7 @@ class NMTDataset(Dataset):
         src_ids, trg_ids = self.data[idx]
         return torch.tensor(src_ids, dtype=torch.long), torch.tensor(trg_ids, dtype=torch.long)
 
-def collate_batch(batch):
-    """
-    batch: list of (src_ids[T1], trg_ids[T2]).
-    Returns:
-      src_pad: [Tsrc, B]
-      trg_pad: [Ttrg, B]
-      src_lens, trg_lens (optional if you need)
-    """
-    src_seqs, trg_seqs = zip(*batch)
-    src_lens = [len(s) for s in src_seqs]
-    trg_lens = [len(t) for t in trg_seqs]
 
-    max_src = max(src_lens)
-    max_trg = max(trg_lens)
-
-    padded_src = torch.full((len(batch), max_src), PAD, dtype=torch.long)
-    padded_trg = torch.full((len(batch), max_trg), PAD, dtype=torch.long)
-
-    for i, (s, t) in enumerate(zip(src_seqs, trg_seqs)):
-        padded_src[i, : len(s)] = s
-        padded_trg[i, : len(t)] = t
-
-    # transpose to [T, B] for your encoder/decoder
-    return padded_src.t().contiguous(), padded_trg.t().contiguous()
 
 data_file = Path("data/ind-eng/ind.txt")
 
@@ -132,7 +109,7 @@ val_loader   = DataLoader(val_ds,   batch_size=BATCH_SIZE, shuffle=False, collat
 test_loader  = DataLoader(test_ds,  batch_size=BATCH_SIZE, shuffle=False, collate_fn=collate_batch)
 
 
-ENCODER_HIDDEN_SIZE = 512
+ENCODER_HIDDEN_SIZE = 256
 DECODER_HIDDEN_SIZE = 256
 
 ENCODER_EMBEDDING_DIM, DECODER_HIDDEN_SIZE  = 256, 256
