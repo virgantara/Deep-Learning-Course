@@ -3,7 +3,7 @@ from collections import Counter
 from pathlib import Path
 import argparse
 from nltk.translate.bleu_score import corpus_bleu
-
+import json
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -98,6 +98,12 @@ print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pa
 # 4) Build separate vocabs (you can also build joint if you prefer)
 en_vocab, en_itos = build_vocab([src for src, _ in train_pairs], max_size=10000)
 id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs], max_size=10000)
+
+with open("en_vocab.json", "w") as f:
+    json.dump(en_vocab, f)
+with open("id_vocab.json", "w") as f:
+    json.dump(id_vocab, f)
+    
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
 
 train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)

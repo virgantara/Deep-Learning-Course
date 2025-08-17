@@ -3,7 +3,7 @@ from collections import Counter
 from pathlib import Path
 import argparse
 from nltk.translate.bleu_score import corpus_bleu
-
+import json
 import torch
 import torch.nn as nn
 from tqdm import tqdm
@@ -85,19 +85,25 @@ def collate_batch(batch):
 
 data_file = Path("data/ind-eng/ind.txt")
 
-# 1) Load + preprocess + filter (e.g., <= 20 tokens)
+
 pairs = load_pairs(data_file, max_len=20, max_pairs=None)
 print(f"Total usable pairs after filtering: {len(pairs):,}")
-
-
-# 3) Split 80/10/10
 
 train_pairs, val_pairs, test_pairs = split_pairs(pairs, 0.8, 0.1)
 print(f"Train: {len(train_pairs):,}, Val: {len(val_pairs):,}, Test: {len(test_pairs):,}")
 
-# 4) Build separate vocabs (you can also build joint if you prefer)
-en_vocab, en_itos = build_vocab([src for src, _ in train_pairs], max_size=10000)
-id_vocab, id_itos = build_vocab([tgt for _, tgt in train_pairs], max_size=10000)
+
+with open("en_vocab.json") as f:
+    en_vocab = json.load(f)
+with open("id_vocab.json") as f:
+    id_vocab = json.load(f)
+
+en_itos = {v: k for k, v in en_vocab.items()}
+id_itos = {v: k for k, v in id_vocab.items()}
+
+en_vocab = {k: int(v) for k, v in en_vocab.items()}
+id_vocab = {k: int(v) for k, v in id_vocab.items()}
+
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
 
 test_ds  = NMTDataset(test_pairs,  en_vocab, id_vocab)

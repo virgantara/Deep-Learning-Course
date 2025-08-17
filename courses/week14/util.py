@@ -7,6 +7,19 @@ import random
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
 
+def save_vocab(vocab, path):
+    import json
+    with open(path, "w") as f:
+        json.dump(vocab, f)
+
+def load_vocab(path):
+    import json
+    with open(path) as f:
+        vocab = json.load(f)
+    vocab = {k: int(v) for k, v in vocab.items()}
+    itos = {v: k for k, v in vocab.items()}
+    return vocab, itos
+
 def load_pairs(path, max_len=20, max_pairs=None):
 	pairs = []
 
