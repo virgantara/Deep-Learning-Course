@@ -241,7 +241,8 @@ def plot_curves(history, save_prefix="bahdanau", fontsize=14):
 
 history = {
     "train_loss": [], "val_loss": [],
-    "train_ppl":  [], "val_ppl":  []
+    "train_ppl":  [], "val_ppl":  [],
+    "val_bleu" : []
 }
 
 EPOCHS = args.epochs
@@ -252,8 +253,6 @@ for epoch in range(1, EPOCHS + 1):
     train_loss, train_ppl = epoch_run(seq2seq, train_loader, train=True,  teacher_forcing=tf)
     val_loss,   val_ppl   = epoch_run(seq2seq, val_loader,   train=False, teacher_forcing=0.0)
     val_bleu = evaluate_bleu(seq2seq, val_loader, en_itos, id_itos)
-    
-    print(f"Epoch {epoch:02d} | Val BLEU: {val_bleu:.2f}")
     
     history["train_loss"].append(train_loss)
     history["val_loss"].append(val_loss)
