@@ -3,7 +3,7 @@ import re
 import numpy as np
 import random
 from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
-
+import torch
 
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
