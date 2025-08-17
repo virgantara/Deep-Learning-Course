@@ -118,7 +118,7 @@ encoder = BahdanauEncoder(input_dim=len(en_vocab),
 						embedding_dim = ENCODER_EMBEDDING_DIM,
 						encoder_hidden_dim=ENCODER_HIDDEN_SIZE,
 						decoder_hidden_dim = DECODER_HIDDEN_SIZE,
-						dropout_p = 0.15)
+						dropout_p = 0.5)
 
 attn = BahdanauAttentionQKV(
             hidden_size=DECODER_HIDDEN_SIZE,
@@ -131,7 +131,7 @@ decoder = BahdanauDecoder(output_dim=len(id_vocab),
 						encoder_hidden_dim = ENCODER_HIDDEN_SIZE,
 						decoder_hidden_dim=DECODER_HIDDEN_SIZE,
 						attention = attn,
-						dropout_p = 0.15)
+						dropout_p = 0.5)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 seq2seq = BahdanauSeq2Seq(encoder, decoder, device, pad_id=0, bos_id=1, eos_id=2).to(device)
