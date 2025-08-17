@@ -76,7 +76,10 @@ class RotationCNN(nn.Module):
         )
 
     def forward(self, x):
-        return self.fc(self.conv(x))
+        x = self.conv(x)
+        x = self.fc(x)
+        
+        return x
 
 # 4. Setup
 transform = transforms.Compose([
