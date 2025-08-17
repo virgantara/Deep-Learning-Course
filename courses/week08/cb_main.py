@@ -8,6 +8,20 @@ from PIL import Image
 import os
 import random
 from tqdm import tqdm
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--data_path', type=str, default='data/ind-eng/ind.txt', help='Path to txt data')
+parser.add_argument('--epochs', type=int, default=10, help='Number of training epochs')
+parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
+parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
+parser.add_argument('--tf', type=float, default=0.5, help='Teacher Forcing')
+parser.add_argument('--dropout', type=float, default=0.15, help='dropout')
+parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
+parser.add_argument('--max_vocab', type=int, default=None)
+parser.add_argument('--target_lang', type=str, default='ID', help='Bahasa tujuan')
+parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
+args = parser.parse_args()
 
 # 1. Rotation Transform Function
 def rotate_image(img, label):
@@ -74,7 +88,7 @@ transform = transforms.Compose([
 ])
 
 dataset = RotationDataset("./data/animals", transform=transform)
-dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
+dataloader = DataLoader(dataset, batch_size=args.batch_size, shuffle=True)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -84,7 +98,7 @@ criterion = nn.CrossEntropyLoss()  # corresponds to Eq (3)
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3)
 
 # 5. Training Loop
-for epoch in range(5):
+for epoch in range(args.epochs):
     total_loss = 0
     for images, labels in tqdm(dataloader):
         images, labels = images.to(device), labels.to(device)
