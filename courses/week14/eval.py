@@ -2,7 +2,7 @@ import unicodedata
 from collections import Counter
 from pathlib import Path
 import argparse
-from nltk.translate.bleu_score import corpus_bleu
+from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
 import json
 import torch
 import torch.nn as nn
@@ -255,5 +255,6 @@ with torch.no_grad():
         if shown >= n_show:
             break
 
-bleu = corpus_bleu(references, hypotheses) * 100
+smoothie = SmoothingFunction().method4
+bleu = corpus_bleu(references, hypotheses, smoothing_function=smoothie) * 100
 print(f"BLEU score: {bleu:.2f}")

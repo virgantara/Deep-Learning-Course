@@ -2,10 +2,57 @@ import unicodedata
 import re
 import numpy as np
 import random
+from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
 
 
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
+
+
+def evaluate_bleu(model, loader, src_itos, trg_itos, src_vocab=None, max_len=40):
+    """
+    Menghitung BLEU score untuk data validasi/test.
+    
+    Args:
+        model      : Trained seq2seq model (BahdanauSeq2Seq)
+        loader     : DataLoader untuk validasi/test
+        src_itos   : index-to-token untuk bahasa sumber
+        trg_itos   : index-to-token untuk bahasa target
+        src_vocab  : (opsional) vocab sumber, hanya digunakan jika ada copy <unk>
+        max_len    : panjang maksimal prediksi
+
+    Returns:
+        bleu_score : BLEU score dalam skala 0–100
+    """
+    model.eval()
+    references = []
+    hypotheses = []
+
+    smoothie = SmoothingFunction().method4
+
+    with torch.no_grad():
+        for src, trg in loader:
+            src = src.to(model.device)
+            trg = trg.to(model.device)
+            pred_ids, _ = model.greedy_decode(src, max_len=max_len)  # [Tpred, B]
+
+            B = src.size(1)
+            for b in range(B):
+                ref = decode_ids(trg[:, b], trg_itos, return_tokens=True)
+                hyp = decode_ids(pred_ids[:, b], trg_itos, 
+                                 src[:, b] if src_vocab else None, 
+                                 src_itos if src_vocab else None, 
+                                 return_tokens=True)
+                
+                ref = [w for w in ref if w not in {'<pad>', '<bos>', '<eos>'}]
+                hyp = [w for w in hyp if w not in {'<pad>', '<bos>', '<eos>'}]
+                
+                references.append([ref])
+                hypotheses.append(hyp)
+
+    bleu = corpus_bleu(references, hypotheses, smoothing_function=smoothie) * 100
+    return bleu
+
 
 def save_vocab(vocab, path):
     import json

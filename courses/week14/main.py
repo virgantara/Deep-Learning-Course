@@ -2,7 +2,7 @@ import unicodedata
 from collections import Counter
 from pathlib import Path
 import argparse
-from nltk.translate.bleu_score import corpus_bleu
+from nltk.translate.bleu_score import corpus_bleu, SmoothingFunction
 import json
 import torch
 import torch.nn as nn
@@ -24,6 +24,7 @@ parser.add_argument('--test_dir', type=str, default='data/catndog/test', help='P
 parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs')
 parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
 parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
+parser.add_argument('--tf', type=float, default=0.5, help='Teacher Forcing')
 parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
 parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
 args = parser.parse_args()
@@ -103,7 +104,7 @@ with open("en_vocab.json", "w") as f:
     json.dump(en_vocab, f)
 with open("id_vocab.json", "w") as f:
     json.dump(id_vocab, f)
-    
+
 print(f"EN vocab size: {len(en_vocab):,} | ID vocab size: {len(id_vocab):,}")
 
 train_ds = NMTDataset(train_pairs, en_vocab, id_vocab)
@@ -266,15 +267,20 @@ for epoch in range(1, EPOCHS + 1):
     tf = max(0.3, 0.7 - 0.04 * (epoch - 1))
     train_loss, train_ppl = epoch_run(seq2seq, train_loader, train=True,  teacher_forcing=tf)
     val_loss,   val_ppl   = epoch_run(seq2seq, val_loader,   train=False, teacher_forcing=0.0)
-
+    val_bleu = evaluate_bleu(seq2seq, val_loader, en_itos, id_itos)
+    
+    print(f"Epoch {epoch:02d} | Val BLEU: {val_bleu:.2f}")
+    
     history["train_loss"].append(train_loss)
     history["val_loss"].append(val_loss)
     history["train_ppl"].append(train_ppl)
     history["val_ppl"].append(val_ppl)
+    history["val_bleu"].append(val_bleu)
 
     print(f"Epoch {epoch:02d} | TF={tf:.2f} | "
           f"Train Loss {train_loss:.4f} PPL {train_ppl:.2f} | "
-          f"Val Loss {val_loss:.4f} PPL {val_ppl:.2f}")
+          f"Val Loss {val_loss:.4f} PPL {val_ppl:.2f} | "
+          f"Val Bleu {val_bleu:.4f} ")
 
     if val_loss < best_val:
         best_val = val_loss
@@ -336,5 +342,7 @@ with torch.no_grad():
         if shown >= n_show:
             break
 
-bleu = corpus_bleu(references, hypotheses) * 100
+
+smoothie = SmoothingFunction().method4
+bleu = corpus_bleu(references, hypotheses, smoothing_function=smoothie) * 100
 print(f"BLEU score: {bleu:.2f}")
