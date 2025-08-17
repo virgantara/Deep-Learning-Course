@@ -26,6 +26,7 @@ parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
 parser.add_argument('--tf', type=float, default=0.5, help='Teacher Forcing')
 parser.add_argument('--dropout', type=float, default=0.15, help='dropout')
 parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
+parser.add_argument('--max_vocab', type=int, default=None)
 parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
 args = parser.parse_args()
 
@@ -33,18 +34,32 @@ args = parser.parse_args()
 SPECIALS = ["<pad>", "<bos>", "<eos>", "<unk>"]
 PAD, BOS, EOS, UNK = range(4)
 
-def build_vocab(token_lists, min_freq=1, max_size=None):
+
+def build_vocab(token_lists, min_freq=1, max_size=None, specials=["<pad>", "<bos>", "<eos>", "<unk>"]):
     counter = Counter()
     for toks in token_lists:
         counter.update(toks)
-    most_common = counter.most_common()
-    if max_size:
-        most_common = most_common[: max(0, max_size - len(SPECIALS))]
-    vocab = {w: i + len(SPECIALS) for i, (w, c) in enumerate(most_common) if c >= min_freq}
-    for i, sp in enumerate(SPECIALS):
-        vocab[sp] = i
+
+    # Filter berdasarkan min_freq lebih dulu
+    filtered = [(w, c) for w, c in counter.items() if c >= min_freq]
+
+    # Sort berdasarkan frekuensi
+    filtered.sort(key=lambda x: (-x[1], x[0]))  # descending freq, then lexicographically
+
+    # Batasi ukuran jika max_size diberikan
+    if max_size is not None:
+        filtered = filtered[:max(0, max_size - len(specials))]
+
+    # Inisialisasi vocab dengan SPECIALS
+    vocab = {sp: i for i, sp in enumerate(specials)}
+
+    for w, _ in filtered:
+        if w not in vocab:
+            vocab[w] = len(vocab)
+
     itos = {i: w for w, i in vocab.items()}
     return vocab, itos
+
 
 class NMTDataset(Dataset):
     def __init__(self, pairs, src_vocab, trg_vocab):
