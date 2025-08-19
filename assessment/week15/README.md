@@ -1,40 +1,81 @@
-# Instruksi Tugas Kelompok – Pembelajaran Mesin 2
+# Tugas Individu: Machine Translation dengan PyTorch  
+**Mata Kuliah:** Pembelajaran Mesin 2  
+**Topik:** Penerapan Deep Learning dalam NLP dan Skenario Nyata (Machine Translation)
 
-## Topik Pilihan
-Setiap kelompok diminta untuk memilih **satu** dari topik berikut:  
-1. **Deteksi Objek** menggunakan RCNN atau SSD  
-2. **Self-Supervised Learning (SimCLR)** dengan downstream task berupa klasifikasi citra  
-3. **Image Classification** menggunakan arsitektur CNN klasik seperti VGGNet atau ResNet  
-4. **Transformer untuk Machine Translation**  
+---
 
-## Ketentuan Tugas
-- Tugas dikerjakan secara **berkelompok**.  
-- Setiap kelompok wajib menulis laporan dengan format **IEEE Conference**.  
-- Sertakan **kode program** dan **hasil eksperimen** (misalnya akurasi, loss curve, confusion matrix, dll.).  
-- Laporan harus berisi:  
-  - Latar Belakang  
-  - Metode (arsitektur/model yang dipilih)  
-  - Implementasi (dataset, preprocessing, kode utama)  
-  - Hasil dan Analisis  
-  - Kesimpulan  
+## Tujuan Pembelajaran
+- Membangun sistem penerjemah otomatis berbasis deep learning.  
+- Membandingkan baseline RNN+Attention dengan Transformer (wajib).  
+- Mengevaluasi performa dengan metrik standar (mis. SacreBLEU, chrF) serta menulis laporan ilmiah sesuai format IEEE.  
 
-## Rubrik Penilaian Laporan
-Total bobot = **100%**  
+---
 
-| Aspek Penilaian | Bobot | Tingkatan Penilaian |
-|------------------|--------|---------------------|
-| **1. Pemahaman Topik** | 20% | (4) Sangat jelas, runtut, dan kontekstual (20%) <br> (3) Cukup jelas namun kurang terstruktur (15%) <br> (2) Umum dan dangkal (10%) <br> (1) Tidak sesuai/kurang tepat (5%) |
-| **2. Desain Metode & Implementasi** | 30% | (4) Metode dipilih tepat, implementasi lengkap dan benar (30%) <br> (3) Metode cukup tepat, implementasi sebagian kurang detail (23%) <br> (2) Implementasi dangkal/tidak konsisten (15%) <br> (1) Salah konsep atau minim implementasi (7%) |
-| **3. Eksperimen & Hasil** | 25% | (4) Eksperimen lengkap dengan analisis mendalam (25%) <br> (3) Eksperimen memadai namun analisis terbatas (19%) <br> (2) Eksperimen minim dan analisis dangkal (12%) <br> (1) Tidak ada eksperimen yang berarti (6%) |
-| **4. Laporan (IEEE Format)** | 15% | (4) Struktur sesuai IEEE, sangat rapi (15%) <br> (3) Ada kesalahan kecil format (11%) <br> (2) Banyak kesalahan format (7%) <br> (1) Tidak mengikuti format (3%) |
-| **5. Presentasi & Diskusi** | 10% | (4) Presentasi jelas, mampu menjawab pertanyaan dengan baik (10%) <br> (3) Presentasi baik, jawaban sebagian kurang meyakinkan (8%) <br> (2) Presentasi kurang terstruktur, jawaban tidak memadai (5%) <br> (1) Tidak siap atau tidak bisa menjawab (2%) |
+## Setup
+- Siapkan environment Python dengan dependensi sesuai kebutuhan.  
+- Gunakan dataset penerjemahan bilingual (misalnya EN–ID atau pasangan bahasa lain yang relevan).  
+- Lakukan preprocessing: pembersihan data, tokenisasi subword (BPE/SentencePiece), serta pembagian data train/valid/test.  
+- Dataset diambil dari https://www.manythings.org/anki/
 
+---
 
-# Rubrik Penilaian Presentasi Tugas Kelompok
+## Tugas yang Harus Dilakukan
 
-| Aspek Penilaian | Bobot | Tingkatan Penilaian |
-|-----------------|-------|---------------------|
-| **1. Struktur & Alur Presentasi** | 25% | (4) Alur sangat runtut, mudah dipahami, waktu terkelola baik (25%) <br> (3) Alur cukup runtut, ada sedikit ketidakteraturan (19%) <br> (2) Alur kurang jelas, banyak bagian lompat-lompat (13%) <br> (1) Tidak terstruktur, membingungkan (7%) |
-| **2. Pemahaman Materi** | 25% | (4) Sangat menguasai topik, menjawab pertanyaan dengan tepat dan meyakinkan (25%) <br> (3) Menguasai sebagian besar topik, jawaban cukup memadai (19%) <br> (2) Pemahaman dangkal, jawaban kurang tepat (13%) <br> (1) Tidak memahami topik, tidak bisa menjawab (7%) |
-| **3. Visualisasi & Media** | 20% | (4) Slide/visual sangat menarik, ringkas, informatif (20%) <br> (3) Slide cukup baik, namun masih terlalu padat atau kurang konsisten (15%) <br> (2) Visual kurang jelas atau tidak mendukung presentasi (10%) <br> (1) Tidak ada/visual sangat buruk (5%) |
-| **4. Kolaborasi Tim** | 15% | (4) Semua anggota berkontribusi seimbang dan kompak (15%) <br> (3) Sebagian anggota dominan, tapi masih ada kerja sama (11%) <br> (2) Hanya 1–2 anggota yang aktif, lainnya pas
+### 1) Persiapan Data
+- Unduh dan bersihkan dataset.  
+- Lakukan tokenisasi subword dan simpan model vocab.  
+- Buat pembagian data train/valid/test dengan rasio yang jelas.  
+
+### 2) Implementasi Baseline (RNN + Attention)
+- Implementasikan arsitektur encoder–decoder dengan attention.  
+- Latih model hingga konvergen, catat metrik pelatihan dan validasi.  
+
+### 3) Implementasi Transformer (Wajib)
+- Implementasikan arsitektur encoder–decoder Transformer.  
+- Gunakan teknik tambahan seperti label smoothing atau warmup learning rate (opsional).  
+- Bandingkan hasilnya dengan baseline.  
+
+### 4) Evaluasi & Analisis
+- Gunakan metrik SacreBLEU (wajib) dan chrF (opsional).  
+- Sajikan contoh hasil terjemahan dan analisis kesalahan.  
+- Lakukan ablation study minimal satu variabel (misalnya ukuran vocab, dropout, beam size).  
+
+### 5) Laporan
+- Tulis laporan dengan format IEEE Conference (Word/LaTeX).  
+- Struktur laporan minimal mencakup: Abstract, Introduction, Related Work, Method, Experiments, Results & Discussion, Conclusion, References.  
+- Sertakan tabel metrik, kurva pelatihan, dan analisis hasil.  
+
+---
+
+## Aturan
+- Wajib menggunakan PyTorch.  
+- Dilarang menggunakan model siap pakai tanpa penjelasan.  
+- Semua sumber data atau kode pihak ketiga harus dicantumkan secara jelas.  
+---
+
+## Pengumpulan
+- Kumpulkan repository berisi kode dan dokumentasi berupa tautan github.  
+- Lampirkan laporan dalam format PDF IEEE Conference.  
+- Sertakan hasil eksperimen (checkpoints, logs, grafik, evaluasi).  
+- Penamaan file laporan nama_mahasiswa_nim.pdf
+- Penamaan file tanpa ada spasi.
+- Upload di LMS El-Qalam
+---
+
+## Rubrik Penilaian (Total 100%)
+| Aspek Penilaian | Bobot | Tingkatan (4) | Tingkatan (3) | Tingkatan (2) | Tingkatan (1) |
+|-----------------|-------|---------------|---------------|---------------|---------------|
+| **Pemahaman & Formulasi Masalah** | 10% | Sangat jelas dan kontekstual (10%) | Cukup jelas (8%) | Umum dan dangkal (5%) | Tidak tepat (2%) |
+| **Data & Preprocessing** | 15% | Lengkap, valid, dan terdokumentasi (15%) | Sebagian lengkap (12%) | Minim dokumentasi (8%) | Tidak jelas (4%) |
+| **Implementasi Baseline** | 15% | Lengkap dan stabil (15%) | Ada minor kekurangan (12%) | Tidak stabil (8%) | Tidak berjalan (4%) |
+| **Implementasi Transformer** | 30% | Lengkap, stabil, hasil baik (30%) | Hasil cukup (24%) | Hasil marginal (16%) | Tidak berjalan (8%) |
+| **Evaluasi & Analisis** | 25% | Lengkap, mendalam, dengan ablation (25%) | Cukup lengkap (19%) | Dangkal (12%) | Minim evaluasi (6%) |
+| **Laporan IEEE** | 5% | Rapi dan sesuai format (5%) | Minor kesalahan (4%) | Banyak kesalahan (3%) | Tidak sesuai (1%) |
+
+---
+
+## Studi Kasus
+- Pilih pasangan bahasa (disarankan EN–ID).  
+- Jelaskan alasan pemilihan dataset.  
+- Identifikasi tantangan khusus (morfologi, OOV, idiom, dll.).  
+- Bandingkan hasil baseline dengan Transformer dan berikan analisis kesalahan.  
