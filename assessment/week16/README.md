@@ -40,7 +40,7 @@ Total bobot = **100%**
 | **4. Kolaborasi Tim** | 15% | (4) Semua anggota berkontribusi seimbang dan kompak (15%) <br> (3) Sebagian anggota dominan, tapi masih ada kerja sama (11%) <br> (2) Hanya 1–2 anggota yang aktif, lainnya pas
 
 # Jadwal dan Aturan Presentasi Tugas Kelompok
-1. Kelas A1 - Tanggal 26 Agustus 2025 pukul 09.00 WIB (Luring)
-1. Kelas A2 - Tanggal 27 Agustus 2025 pukul 09.00 WIB (Luring)
+1. Kelas A1 - Tanggal 27 Agustus 2025 pukul 09.00 WIB (Luring)
+1. Kelas A2 - Tanggal 27 Agustus 2025 pukul 13.00 WIB (Luring)
 1. Kelas C1 - Tanggal 28 Agustus 2025 pukul 09.00 WIB (Daring)
 1. Wajib hadir 5 menit sebelum presentasi
