@@ -242,7 +242,7 @@ if __name__ == '__main__':
     parser.add_argument('--eval', action="store_true", help='train or eval')
     args = parser.parse_args()
 
-    set_seed(args)
+    set_seed(args.seed)
 
     _init_(args)
     if not args.eval:
