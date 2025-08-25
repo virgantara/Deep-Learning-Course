@@ -78,8 +78,7 @@ def main(args):
 	for epoch in range(epochs):
 		generator.train()
 		discriminator.train()
-	    
-	    total = 0
+		total = 0
 
 	    total_loss_g = 0
 	    total_loss_d = 0
