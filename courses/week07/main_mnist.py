@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 from model_mnist import Discriminator, Generator
+from tqdm import tqdm
 
 os.makedirs("images", exist_ok=True)
 
@@ -87,7 +88,7 @@ Tensor = torch.cuda.FloatTensor if cuda else torch.FloatTensor
 # ----------
 
 for epoch in range(opt.n_epochs):
-    for i, (imgs, _) in enumerate(dataloader):
+    for i, (imgs, _) in tqdm(enumerate(dataloader)):
 
         # Adversarial ground truths
         valid = Variable(Tensor(imgs.shape[0], 1).fill_(1.0), requires_grad=False)
