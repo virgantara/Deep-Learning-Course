@@ -181,30 +181,30 @@ def test(args):
 	plt.show()
 
 
-	# fig, axs = plt.subplots(r, c, figsize=(10, 6))
-	# fig.suptitle("Gambar Terdekat dari Dataset Pelatihan")
+	fig, axs = plt.subplots(r, c, figsize=(10, 6))
+	fig.suptitle("Gambar Terdekat dari Dataset Pelatihan")
 
-	# list_diffs = [0] * len(data)
-	# for ind, k in tqdm(enumerate(data)):
-	#     lst_cnt_diffs = [0] * (r * c)
-	#     for cnt in range(r * c):
-	#         lst_cnt_diffs[cnt] = compare_images(gen_imgs[cnt], k)
-	#     list_diffs[ind] = lst_cnt_diffs
+	list_diffs = [0] * len(data)
+	for ind, k in tqdm(enumerate(data)):
+	    lst_cnt_diffs = [0] * (r * c)
+	    for cnt in range(r * c):
+	        lst_cnt_diffs[cnt] = compare_images(gen_imgs[cnt], k)
+	    list_diffs[ind] = lst_cnt_diffs
 
-	# indx_more_sim_images = torch.argmin(torch.tensor(list_diffs).T, dim=1)
-	# sims_images = [data_train[ind] for ind in indx_more_sim_images]
+	indx_more_sim_images = torch.argmin(torch.tensor(list_diffs).T, dim=1)
+	sims_images = [data_train[ind] for ind in indx_more_sim_images]
 
-	# cnt = 0
-	# for i in range(r):
-	#     for j in range(c):
-	#         c_diff = float("inf")
-	#         c_img = None
+	cnt = 0
+	for i in range(r):
+	    for j in range(c):
+	        c_diff = float("inf")
+	        c_img = None
 	    
-	#         axs[i, j].imshow(sims_images[cnt][0], cmap="gray")
-	#         axs[i, j].axis("off")
-	#         cnt += 1
+	        axs[i, j].imshow(sims_images[cnt][0], cmap="gray")
+	        axs[i, j].axis("off")
+	        cnt += 1
 
-	# plt.show()
+	plt.show()
 
 
 
