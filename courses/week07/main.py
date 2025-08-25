@@ -128,7 +128,7 @@ def main(args):
 				optimizer_g.step()
 
 				total_loss_g += loss_generator.item() * bsz
-				total_loss_d += loss_d_avg.item() * bsz
+				total_loss_d += loss_d_avg * bsz
 
 				total += bsz
 
