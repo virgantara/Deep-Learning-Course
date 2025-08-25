@@ -3,7 +3,7 @@ import torch.nn as nn
 
 
 class Discriminator(nn.Module):
-    def __init__(self):
+    def __init__(self, opt):
         super(Discriminator, self).__init__()
 
         def discriminator_block(in_filters, out_filters, bn=True):
@@ -24,7 +24,7 @@ class Discriminator(nn.Module):
         self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, 1), nn.Sigmoid())
 
 class Generator(nn.Module):
-    def __init__(self):
+    def __init__(self, opt):
         super(Generator, self).__init__()
 
         self.init_size = opt.img_size // 4

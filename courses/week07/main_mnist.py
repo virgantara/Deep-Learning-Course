@@ -49,8 +49,8 @@ def weights_init_normal(m):
 adversarial_loss = torch.nn.BCELoss()
 
 # Initialize generator and discriminator
-generator = Generator()
-discriminator = Discriminator()
+generator = Generator(opt)
+discriminator = Discriminator(opt)
 
 if cuda:
     generator.cuda()
