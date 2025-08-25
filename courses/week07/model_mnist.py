@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 
-
 class Discriminator(nn.Module):
     def __init__(self, opt):
         super(Discriminator, self).__init__()
@@ -22,6 +21,13 @@ class Discriminator(nn.Module):
         # The height and width of downsampled image
         ds_size = opt.img_size // 2 ** 4
         self.adv_layer = nn.Sequential(nn.Linear(128 * ds_size ** 2, 1), nn.Sigmoid())
+
+    def forward(self, img):
+        out = self.model(img)
+        out = out.view(out.shape[0], -1)
+        validity = self.adv_layer(out)
+
+        return validity
 
 class Generator(nn.Module):
     def __init__(self, opt):
