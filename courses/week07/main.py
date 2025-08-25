@@ -15,6 +15,7 @@ import random
 import matplotlib.pyplot as plt
 from dataset import DatasetImages
 from models import Discriminator, Generator
+import numpy as np
 
 def _init_(args):
     if not os.path.exists('output'):
