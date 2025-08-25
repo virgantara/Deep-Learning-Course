@@ -18,20 +18,20 @@ from models import Discriminator, Generator
 import numpy as np
 
 def _init_(args):
-    if not os.path.exists('output'):
-        os.makedirs('output')
-    if not os.path.exists('output/'+args.exp_name):
-        os.makedirs('output/'+args.exp_name)
-    if not os.path.exists('output/'+args.exp_name+'/'+'models'):
-        os.makedirs('output/'+args.exp_name+'/'+'models')
+	if not os.path.exists('output'):
+		os.makedirs('output')
+	if not os.path.exists('output/'+args.exp_name):
+		os.makedirs('output/'+args.exp_name)
+	if not os.path.exists('output/'+args.exp_name+'/'+'models'):
+		os.makedirs('output/'+args.exp_name+'/'+'models')
 
 def weights_init(m):
-    classname = m.__class__.__name__
-    if classname.find('Conv') != -1:
-        nn.init.normal_(m.weight.data, 0.0, 0.02)
-    elif classname.find('BatchNorm') != -1:
-        nn.init.normal_(m.weight.data, 1.0, 0.02)
-        nn.init.constant_(m.bias.data, 0)
+	classname = m.__class__.__name__
+	if classname.find('Conv') != -1:
+		nn.init.normal_(m.weight.data, 0.0, 0.02)
+	elif classname.find('BatchNorm') != -1:
+		nn.init.normal_(m.weight.data, 1.0, 0.02)
+		nn.init.constant_(m.bias.data, 0)
 
 def main(args):
 	path_to_images = args.dataset_path 
@@ -52,10 +52,10 @@ def main(args):
 	epochs = args.epochs # 
 
 	transform = transforms.Compose([
-	    transforms.Grayscale(), # 
-	    transforms.Resize((64, 64)), # 
-	    transforms.ToTensor(), # 
-	    transforms.Normalize((0.5), (0.5)) # 
+		transforms.Grayscale(), # 
+		transforms.Resize((64, 64)), # 
+		transforms.ToTensor(), # 
+		transforms.Normalize((0.5), (0.5)) # 
 	])
 
 	paths_images = list(Path(path_to_images).iterdir()) # 
@@ -66,82 +66,109 @@ def main(args):
 	data_train = DatasetImages(paths_train, transform=transform)
 	train_loader = DataLoader(data_train, shuffle=True, batch_size=batch_size)
 
-	generator = Generator(embedding_dim)
-	discriminator = Discriminator()
+	generator = Generator(embedding_dim).to(device)
+	discriminator = Discriminator().to(device)
 
-	generator = generator.to(device)
-	discriminator = discriminator.to(device)
+	generator.apply(weights_init)
+	discriminator.apply(weights_init)
 
 	optimizer_g = optim.Adam(generator.parameters(), lr=lr_g, betas=(0.5, 0.999))
 	optimizer_d = optim.Adam(discriminator.parameters(), lr=lr_d, betas=(0.5, 0.999))
 
+	history_g, history_d = [], []
 
+	D_STEPS = 2
 	for epoch in range(epochs):
-	    generator.train()
-	    discriminator.train()
-	    total = 0
+		generator.train()
+		discriminator.train()
+		total = 0
 
-	    total_loss_g = 0
-	    total_loss_d = 0
+		total_loss_g = 0
+		total_loss_d = 0
 
-	    with tqdm(train_loader, desc=f"Epoch {epoch}", leave=False) as pbar:
+		with tqdm(train_loader, desc=f"Epoch {epoch}", leave=False) as pbar:
 
-	        for batch in pbar:
+			for batch in pbar:
 
-	            real_images = batch.to(device)
-	            batch_size = len(real_images)
+				real_images = batch.to(device)
+				batch_size = len(real_images)
+				bsz = real_images.size(0)
 
-	            random_latent_vectors = torch.randn(batch_size, embedding_dim).to(device)
+				# random_latent_vectors = torch.randn(batch_size, embedding_dim).to(device)
 
-	            for _ in range(5):
-	                optimizer_d.zero_grad()
+				loss_d_accum = 0.0
 
-	                with torch.no_grad():
-	                    generated_images = generator(random_latent_vectors).to(device)
+				for _ in range(D_STEPS):
+					optimizer_d.zero_grad()
 
-	                real_preds = discriminator(real_images)
-	                fake_preds = discriminator(generated_images)
+					z = torch.randn(bsz, embedding_dim, device=device)
+					with torch.no_grad():
+						fake = generator(z)
 
-	                loss_discriminator = loss_d(device, real_preds, fake_preds)
-	                loss_discriminator.backward()
-	                optimizer_d.step()
+					real_preds = discriminator(real_images)
+					fake_preds = discriminator(fake)
 
-	            optimizer_g.zero_grad()
-	            random_latent_vectors = torch.randn(batch_size, embedding_dim).to(device)
-	            generated_images = generator(random_latent_vectors)
-	            
-	            fake_preds = discriminator(generated_images)
+					loss_discriminator = loss_d(device, real_preds, fake_preds)
+					loss_discriminator.backward()
+					optimizer_d.step()
 
-	            loss_generator = loss_g(device, fake_preds)
+					loss_d_accum += loss_discriminator.item()
 
-	            loss_generator.backward()
-	            optimizer_g.step()
+				loss_d_avg = loss_d_accum/ D_STEPS
+				optimizer_g.zero_grad()
 
-	            total_loss_g += loss_generator.item() * batch_size
-	            total_loss_d += loss_discriminator.item() * batch_size
+				z = torch.randn(bsz, embedding_dim, device=device)
+				generated_images = generator(z)
+				
+				fake_preds = discriminator(generated_images)
 
-	            total += batch_size
+				loss_generator = loss_g(device, fake_preds)
 
-	            pbar.set_postfix({
-	                "Loss d" : f"{loss_discriminator.item():.4f}",
-	                "Loss g" : f"{loss_generator.item():.4f}",
-	            })
+				loss_generator.backward()
+				optimizer_g.step()
 
-	    loss_generator_result = total_loss_g / total
-	    loss_discriminator_result = total_loss_d / total
-	    
-	    # проверка качества генератора
-	    save_generated_images(epoch, generator, embedding_dim, examples=10, device=device)
-	    
-	    tqdm.write(f"Epoch: {epoch}, loss_g: {loss_generator_result}, loss_d: {loss_discriminator_result}")
+				total_loss_g += loss_generator.item() * bsz
+				total_loss_d += loss_d_avg.item() * bsz
 
-	            
+				total += bsz
+
+				pbar.set_postfix({
+					"Loss d" : f"{loss_discriminator.item():.4f}",
+					"Loss g" : f"{loss_generator.item():.4f}",
+				})
+
+		loss_generator_result = total_loss_g / total
+		loss_discriminator_result = total_loss_d / total
+
+		history_g.append(loss_generator_result)
+		history_d.append(loss_discriminator_result)
+		
+		# проверка качества генератора
+		generator.eval()
+		with torch.no_grad():
+			save_generated_images(epoch, generator, embedding_dim, examples=10, device=device)
+		
+		generator.train()
+
+		tqdm.write(f"Epoch: {epoch}, loss_g: {loss_generator_result}, loss_d: {loss_discriminator_result}")
+
+				
 	torch.save(generator.state_dict(), path_to_dir + '/weights_dcgan/generator.pt')
 	torch.save(discriminator.state_dict(), path_to_dir + '/weights_dcgan/discriminator.pt')
-
+	plt.figure()
+	plt.plot(history_d, label='Discriminator')
+	plt.plot(history_g, label='Generator')
+	plt.xlabel('Epoch')
+	plt.ylabel('Loss')
+	plt.title('Training Loss Curve')
+	plt.legend()
+	plt.grid(True)
+	plt.tight_layout()
+	plt.savefig(Path(path_to_dir) / 'generated_images' / 'loss_curve.png', dpi=150)
+	plt.close()
 
 def compare_images(img1, img2):
-    return torch.mean(torch.abs(img1 - img2)).item()
+	return torch.mean(torch.abs(img1 - img2)).item()
 
 def test(args):
 	print("Evaluating...")
@@ -159,10 +186,10 @@ def test(args):
 	# coeff_train = 1.0 
 
 	# transform = transforms.Compose([
-	#     transforms.Grayscale(), # 
-	#     transforms.Resize((64, 64)), # 
-	#     transforms.ToTensor(), # 
-	#     transforms.Normalize((0.5), (0.5)) # 
+	#	 transforms.Grayscale(), # 
+	#	 transforms.Resize((64, 64)), # 
+	#	 transforms.ToTensor(), # 
+	#	 transforms.Normalize((0.5), (0.5)) # 
 	# ])
 
 	# paths_images = list(Path(path_to_images).iterdir()) # 
@@ -177,16 +204,16 @@ def test(args):
 	r, c = 3, 5
 	noise = torch.randn(r * c, embedding_dim, device='cpu')
 	with torch.no_grad():
-	    gen_imgs = model(noise).cpu()
+		gen_imgs = model(noise).cpu()
 
 	fig, axs = plt.subplots(r, c, figsize=(10, 6))
 	fig.suptitle("Gambar yang Dihasilkan")
 	cnt = 0
 	for i in range(r):
-	    for j in range(c):
-	        axs[i, j].imshow(gen_imgs[cnt, 0], cmap="gray")
-	        axs[i, j].axis("off")
-	        cnt += 1
+		for j in range(c):
+			axs[i, j].imshow(gen_imgs[cnt, 0], cmap="gray")
+			axs[i, j].axis("off")
+			cnt += 1
 	plt.show()
 
 
@@ -195,58 +222,58 @@ def test(args):
 
 	list_diffs = [0] * len(data)
 	for ind, k in tqdm(enumerate(data)):
-	    lst_cnt_diffs = [0] * (r * c)
-	    for cnt in range(r * c):
-	        lst_cnt_diffs[cnt] = compare_images(gen_imgs[cnt], k)
-	    list_diffs[ind] = lst_cnt_diffs
+		lst_cnt_diffs = [0] * (r * c)
+		for cnt in range(r * c):
+			lst_cnt_diffs[cnt] = compare_images(gen_imgs[cnt], k)
+		list_diffs[ind] = lst_cnt_diffs
 
 	indx_more_sim_images = torch.argmin(torch.tensor(list_diffs).T, dim=1)
 	sims_images = [data_train[ind] for ind in indx_more_sim_images]
 
 	cnt = 0
 	for i in range(r):
-	    for j in range(c):
-	        c_diff = float("inf")
-	        c_img = None
-	    
-	        axs[i, j].imshow(sims_images[cnt][0], cmap="gray")
-	        axs[i, j].axis("off")
-	        cnt += 1
+		for j in range(c):
+			c_diff = float("inf")
+			c_img = None
+		
+			axs[i, j].imshow(sims_images[cnt][0], cmap="gray")
+			axs[i, j].axis("off")
+			cnt += 1
 
 	plt.show()
 
 def set_seed(seed=42):
-    torch.manual_seed(seed)
-    random.seed(seed)
-    np.random.seed(seed)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+	torch.manual_seed(seed)
+	random.seed(seed)
+	np.random.seed(seed)
+	torch.backends.cudnn.deterministic = True
+	torch.backends.cudnn.benchmark = False
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--exp_name', type=str, default='exp', metavar='N',
-                        help='Name of the experiment')
-    parser.add_argument('--model_path', type=str, default='output/weights_dcgan', metavar='N',
-                        help='path of model')
-    parser.add_argument('--lr_d', type=float, default=2e-4, metavar='LR',
-                        help='learning rate (default: 0.001, 0.1 if using sgd)')
-    parser.add_argument('--lr_g', type=float, default=2e-4, metavar='LR',
-                        help='learning rate (default: 0.001, 0.1 if using sgd)')
-    parser.add_argument('--model_name', type=str, default='AE', help='Model Name')
-    parser.add_argument('--dataset_path', type=str, default='data', help='Dataset Path')
-    parser.add_argument('--output_path', type=str, default='output', help='Dataset Path')
-    parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
-    parser.add_argument('--seed', type=int, default=42, help='Seed')
-    parser.add_argument('--batch_size', type=int, default=128, help='batch size')
-    parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
-    parser.add_argument('--eval', action="store_true", help='train or eval')
-    args = parser.parse_args()
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--exp_name', type=str, default='exp', metavar='N',
+						help='Name of the experiment')
+	parser.add_argument('--model_path', type=str, default='output/weights_dcgan', metavar='N',
+						help='path of model')
+	parser.add_argument('--lr_d', type=float, default=2e-4, metavar='LR',
+						help='learning rate (default: 0.001, 0.1 if using sgd)')
+	parser.add_argument('--lr_g', type=float, default=2e-4, metavar='LR',
+						help='learning rate (default: 0.001, 0.1 if using sgd)')
+	parser.add_argument('--model_name', type=str, default='AE', help='Model Name')
+	parser.add_argument('--dataset_path', type=str, default='data', help='Dataset Path')
+	parser.add_argument('--output_path', type=str, default='output', help='Dataset Path')
+	parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
+	parser.add_argument('--seed', type=int, default=42, help='Seed')
+	parser.add_argument('--batch_size', type=int, default=128, help='batch size')
+	parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
+	parser.add_argument('--eval', action="store_true", help='train or eval')
+	args = parser.parse_args()
 
-    set_seed(args.seed)
+	set_seed(args.seed)
 
-    _init_(args)
-    if not args.eval:
-    	main(args)
-    else:
-    	test(args)
+	_init_(args)
+	if not args.eval:
+		main(args)
+	else:
+		test(args)
