@@ -13,7 +13,7 @@ from torch.autograd import Variable
 import torch.nn as nn
 import torch.nn.functional as F
 import torch
-from model_mnist.py import Discriminator, Generator
+from model_mnist import Discriminator, Generator
 
 os.makedirs("images", exist_ok=True)
 
