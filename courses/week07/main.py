@@ -77,7 +77,7 @@ def main(args):
 
 	history_g, history_d = [], []
 
-	D_STEPS = 2
+	D_STEPS = args.d_steps
 	for epoch in range(epochs):
 		generator.train()
 		discriminator.train()
@@ -266,6 +266,7 @@ if __name__ == '__main__':
 	parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
 	parser.add_argument('--seed', type=int, default=42, help='Seed')
 	parser.add_argument('--batch_size', type=int, default=128, help='batch size')
+	parser.add_argument('--d_steps', type=int, default=2, help='d_step')
 	parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
 	parser.add_argument('--eval', action="store_true", help='train or eval')
 	args = parser.parse_args()
