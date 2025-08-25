@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 from dataset import DatasetImages
 from models import Discriminator, Generator
 
-def _init_():
+def _init_(args):
     if not os.path.exists('output'):
         os.makedirs('output')
     if not os.path.exists('output/'+args.exp_name):
@@ -24,6 +24,13 @@ def _init_():
     if not os.path.exists('output/'+args.exp_name+'/'+'models'):
         os.makedirs('output/'+args.exp_name+'/'+'models')
 
+def weights_init(m):
+    classname = m.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(m.weight.data, 0.0, 0.02)
+    elif classname.find('BatchNorm') != -1:
+        nn.init.normal_(m.weight.data, 1.0, 0.02)
+        nn.init.constant_(m.bias.data, 0)
 
 def main(args):
 	path_to_images = args.dataset_path 
@@ -69,7 +76,9 @@ def main(args):
 
 
 	for epoch in range(epochs):
-
+		generator.train()
+		discriminator.train()
+	    
 	    total = 0
 
 	    total_loss_g = 0
@@ -206,6 +215,12 @@ def test(args):
 
 	plt.show()
 
+def set_seed(seed=42):
+    torch.manual_seed(seed)
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 
 if __name__ == '__main__':
@@ -214,19 +229,23 @@ if __name__ == '__main__':
                         help='Name of the experiment')
     parser.add_argument('--model_path', type=str, default='output/weights_dcgan', metavar='N',
                         help='path of model')
-    parser.add_argument('--lr_d', type=float, default=0.0002, metavar='LR',
+    parser.add_argument('--lr_d', type=float, default=2e-4, metavar='LR',
                         help='learning rate (default: 0.001, 0.1 if using sgd)')
-    parser.add_argument('--lr_g', type=float, default=0.0001, metavar='LR',
+    parser.add_argument('--lr_g', type=float, default=2e-4, metavar='LR',
                         help='learning rate (default: 0.001, 0.1 if using sgd)')
     parser.add_argument('--model_name', type=str, default='AE', help='Model Name')
     parser.add_argument('--dataset_path', type=str, default='data', help='Dataset Path')
     parser.add_argument('--output_path', type=str, default='output', help='Dataset Path')
     parser.add_argument('--epochs', type=int, default=100, help='Num of epoch')
-    parser.add_argument('--batch_size', type=int, default=256, help='batch size')
+    parser.add_argument('--seed', type=int, default=42, help='Seed')
+    parser.add_argument('--batch_size', type=int, default=128, help='batch size')
     parser.add_argument('--embedding_dim', type=int, default=100, help='batch size')
     parser.add_argument('--eval', action="store_true", help='train or eval')
     args = parser.parse_args()
-    _init_()
+
+    set_seed(args)
+
+    _init_(args)
     if not args.eval:
     	main(args)
     else:
