@@ -53,7 +53,7 @@ def main(args):
 			loss.backward()
 			optimizer.step()
 		
-		train_loss += loss.item() * data.size(0)
+			train_loss += loss.item() * data.size(0)
 
 		model.eval()
 		correct = 0
@@ -103,9 +103,9 @@ if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--train_dir', type=str, default='data/catndog/train', help='Path to training data')
 	parser.add_argument('--test_dir', type=str, default='data/catndog/test', help='Path to test data')
-	parser.add_argument('--epochs', type=int, default=50, help='Number of training epochs')
+	parser.add_argument('--epochs', type=int, default=20, help='Number of training epochs')
 	parser.add_argument('--batch_size', type=int, default=32, help='Batch size')
-	parser.add_argument('--lr', type=float, default=1e-4, help='Learning rate')
+	parser.add_argument('--lr', type=float, default=1e-3, help='Learning rate')
 	parser.add_argument('--num_classes', type=int, default=10, help='Number of classes')
 	parser.add_argument('--checkpoint', type=str, default='cat_dog_checkpoint.pth', help='Path to save model checkpoint')
 	args = parser.parse_args()
